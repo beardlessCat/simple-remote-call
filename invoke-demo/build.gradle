@@ -1,0 +1,19 @@
+apply plugin: 'java'
+apply plugin: pluginIds.springBoot
+configurations {
+	developmentOnly
+	runtimeClasspath {
+		extendsFrom developmentOnly
+	}
+	cxf
+	all*.exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
+dependencies {
+    implementation project(':invoke-client')
+	implementation libraries.springBootStarterWeb
+	implementation libraries.springBootStarterDataRedis
+	annotationProcessor libraries.springBootConfigurationProcessor
+
+}
+

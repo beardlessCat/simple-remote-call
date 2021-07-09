@@ -1,0 +1,5 @@
+rootProject.name = 'simple-remote-call'
+include 'invoke-client'
+include 'invoke-demo'
+include 'server'
+
