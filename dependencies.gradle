@@ -5,13 +5,9 @@ ext {
 }
 
 versions.springBoot = "2.3.4.RELEASE"
-versions.cxf = "3.4.0"
-versions.cxf = "3.4.0"
 
 pluginIds.springBoot = "org.springframework.boot"
 pluginIds.springDependencyManager = "io.spring.dependency-management"
-pluginIds.flyway = "org.flywaydb.flyway"
-pluginIds.jooq = "nu.studer.jooq"
 
 libraries.springBootPlugin = "org.springframework.boot:spring-boot-gradle-plugin:${versions.springBoot}"
 libraries.springDependencyManagerPlugin = "io.spring.gradle:dependency-management-plugin:1.0.10.RELEASE"
@@ -19,38 +15,24 @@ libraries.springDependencyManagerPlugin = "io.spring.gradle:dependency-managemen
 libraries.springBootBom = "org.springframework.boot:spring-boot-dependencies:${versions.springBoot}"
 
 libraries.springBootConfigurationProcessor = "org.springframework.boot:spring-boot-configuration-processor"
-libraries.springBootStarterActuator = "org.springframework.boot:spring-boot-starter-actuator"
 libraries.springBootStarterAop = "org.springframework.boot:spring-boot-starter-aop"
 libraries.springBootStarterDataJdbc = "org.springframework.boot:spring-boot-starter-data-jdbc"
 libraries.springBootStarterDataRedis = "org.springframework.boot:spring-boot-starter-data-redis"
 libraries.springBootStarterJooq = "org.springframework.boot:spring-boot-starter-jooq"
 libraries.springBootStarterJson = "org.springframework.boot:spring-boot-starter-json"
 libraries.springBootStarterLog4j2 = "org.springframework.boot:spring-boot-starter-log4j2"
-libraries.springBootStarterTest = "org.springframework.boot:spring-boot-starter-test"
 libraries.springBootStarterThymeleaf = "org.springframework.boot:spring-boot-starter-thymeleaf"
 libraries.springBootStarterValidation = "org.springframework.boot:spring-boot-starter-validation"
 libraries.springBootStarterWeb = "org.springframework.boot:spring-boot-starter-web"
 libraries.springDataCommons = "org.springframework.data:spring-data-commons"
-libraries.springSessionDataRedis= "org.springframework.session:spring-session-data-redis"
 
-libraries.bcprovJdk15on = "org.bouncycastle:bcprov-jdk15on:1.66"
 libraries.commonsLang3 = 'org.apache.commons:commons-lang3'
-libraries.cxfSpringBootStarterJaxws = "org.apache.cxf:cxf-spring-boot-starter-jaxws:${versions.cxf}"
-libraries.cxfRtFeaturesLogging = "org.apache.cxf:cxf-rt-features-logging:${versions.cxf}"
-libraries.cxfToolsWsdltoFrontendJaxws = "org.apache.cxf:cxf-tools-wsdlto-frontend-jaxws:${versions.cxf}"
-libraries.cxfToolsWsdltoDatabindingJaxb = "org.apache.cxf:cxf-tools-wsdlto-databinding-jaxb:${versions.cxf}"
-libraries.dom4j = "dom4j:dom4j:1.6.1"
-libraries.guava = "com.google.guava:guava:29.0-jre"
 libraries.httpComponents = "org.apache.httpcomponents:httpclient"
 libraries.jpa = "jakarta.persistence:jakarta.persistence-api"
 libraries.jaxbApi = 'javax.xml.bind:jaxb-api'
 libraries.jaxbRuntime = 'org.glassfish.jaxb:jaxb-runtime'
 libraries.jsonLib = "net.sf.json-lib:json-lib:2.4:jdk15"
-libraries.kaptcha = "com.github.penggle:kaptcha:2.3.2"
 libraries.lombok = "org.projectlombok:lombok"
 libraries.micrometerRegistryPrometheus = "io.micrometer:micrometer-registry-prometheus"
-libraries.mysql = "mysql:mysql-connector-java"
 libraries.okhttp3 = "com.squareup.okhttp3:okhttp"
 libraries.servletApi = "jakarta.servlet:jakarta.servlet-api"
-libraries.swaggerAnnotations = "io.swagger:swagger-annotations:${versions.swagger}"
-libraries.wsRt = "com.sun.xml.ws:rt:2.3.3"
