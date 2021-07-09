@@ -20,9 +20,21 @@ public @interface  InvokeRequest
 	@AliasFor("value")
 	String path() default "";
 
+	/**
+	 * 请求方法
+	 * @return
+	 */
 	HttpMethod method() default HttpMethod.POST;
 
+	/**
+	 * 是否携带accessToken
+	 * @return
+	 */
 	boolean withAccessToken() default true;
 
+	/**
+	 * 重试次数
+	 * @return
+	 */
 	int maxAttempts() default 0;
 }
