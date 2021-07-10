@@ -9,4 +9,8 @@ import org.springframework.http.HttpMethod;
 public interface RequesClient {
 	@InvokeRequest(value = "/hello",withAccessToken = false,method = HttpMethod.GET)
 	public String hello();
+	@InvokeRequest(value = "/delete",method = HttpMethod.DELETE)
+	public String delete();
+	@InvokeRequest(value = "/add",withAccessToken = false,method = HttpMethod.POST)
+	public String add();
 }
