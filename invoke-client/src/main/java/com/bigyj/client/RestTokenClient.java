@@ -7,6 +7,6 @@ import com.bigyj.common.entity.AccessToken;
 
 @InvokeClient(value = "/v1/oauth")
 public interface RestTokenClient {
-	@InvokeRequest(value = "/getAccessToken",withAccessToken = false)
+	@InvokeRequest(value = "/getAccessToken",withAccessToken = false,maxAttempts = 5)
 	public AccessToken getAccessToken(AccessTokenQueryDto accessTokenQueryDto);
 }
