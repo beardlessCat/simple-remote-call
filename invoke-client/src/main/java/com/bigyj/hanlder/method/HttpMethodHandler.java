@@ -8,6 +8,7 @@ import com.bigyj.common.exception.ApiException;
 import com.bigyj.domain.RequestDomain;
 import com.bigyj.supplier.AccessTokenSupplier;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +19,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
+@Slf4j
 @AllArgsConstructor
 public class HttpMethodHandler implements MethodHandler{
 	private RequestDomain requestDomain;
@@ -40,12 +41,13 @@ public class HttpMethodHandler implements MethodHandler{
 			accessToken = accessTokenSupplier.get();
 		}
 		int tryCount = 0;
-		//超时机制
+		//超时重试机制
 		for(;;){
 			try {
 				tryCount++ ;
 				return execute(params, accessToken);
 			}catch (ResourceAccessException e){
+				logger.error(requestDomain.getValue()+"接口重试次数"+tryCount);
 				if(tryCount>requestDomain.getMaxAttempts()){
 					throw new ApiException("00001","接口调用失败！");
 				}
