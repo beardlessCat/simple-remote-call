@@ -1,6 +1,6 @@
 package com.bigyj.controller;
 
-import com.bigyj.client.RequesClient;
+import com.bigyj.client.RequestClient;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
 
 	@Autowired
-	private RequesClient requesClient;
+	private RequestClient requesClient;
 
 	@RequestMapping("hello")
 	public String hello(){

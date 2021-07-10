@@ -14,11 +14,9 @@ import org.springframework.http.HttpMethod;
 @Documented
 public @interface  InvokeRequest
 {
+
 	@AliasFor("path")
 	String value() default "";
-
-	@AliasFor("value")
-	String path() default "";
 
 	/**
 	 * 请求方法
