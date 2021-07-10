@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 @AllArgsConstructor
@@ -25,7 +26,7 @@ public class HttpMethodHandler implements MethodHandler{
 	@Override
 	public Object invoke(Object[] args) throws Throwable {
 		Object params =null;
-		if(args.length>0){
+		if(args!=null&&args.length>0){
 			params = args[0];
 		}
 		AccessToken accessToken = new AccessToken() ;
@@ -34,12 +35,15 @@ public class HttpMethodHandler implements MethodHandler{
 		}
 		return execute(params,accessToken);
 	}
-	Object execute(Object params , AccessToken accessToken){
+	Object execute(Object params , AccessToken accessToken) throws ClassNotFoundException {
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", "Bearer "+accessToken.getAccessToken());
+		if(!StringUtils.isEmpty(accessToken.getAccessToken())){
+			headers.add("Authorization", "Bearer "+accessToken.getAccessToken());
+		}
 		headers.add("Content-Type","application/json;charset=utf-8");
 		HttpEntity entity = new HttpEntity<>(params, headers);
-		ResponseEntity responseEntity = restTemplate.exchange(requestDomain.getValue(), requestDomain.getMethod(), entity, returnType.getClass());
+		Class<?> aClass = Class.forName(returnType.getTypeName());
+		ResponseEntity responseEntity = restTemplate.exchange(requestDomain.getValue(), requestDomain.getMethod(), entity,aClass);
 		Object body = responseEntity.getBody();
 		return body;
 	}

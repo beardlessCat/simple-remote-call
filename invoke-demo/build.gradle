@@ -10,9 +10,10 @@ configurations {
 }
 
 dependencies {
-   implementation project(':invoke-client')
+    implementation project(':invoke-client')
+	implementation project(':common')
 	implementation libraries.springBootStarterWeb
-//	implementation libraries.springBootStarterDataRedis
+	implementation libraries.springBootStarterDataRedis
 //	annotationProcessor libraries.springBootConfigurationProcessor
 
 }

@@ -6,7 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.core.annotation.AliasFor;
 import org.springframework.http.HttpMethod;
 
 @Target({ElementType.ANNOTATION_TYPE, ElementType.METHOD})
@@ -15,7 +14,6 @@ import org.springframework.http.HttpMethod;
 public @interface  InvokeRequest
 {
 
-	@AliasFor("path")
 	String value() default "";
 
 	/**

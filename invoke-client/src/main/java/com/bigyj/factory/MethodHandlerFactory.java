@@ -2,7 +2,6 @@ package com.bigyj.factory;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.util.function.Function;
 
 import com.bigyj.annotation.InvokeRequest;
 import com.bigyj.config.RemoteConfig;
@@ -21,9 +20,10 @@ public class MethodHandlerFactory {
 	private RemoteConfig remoteConfig;
 	private String clientPath ;
 	private AccessTokenSupplier accessTokenSupplier;
-	public MethodHandlerFactory(RestTemplateBuilder restTemplateBuilder, RemoteConfig remoteConfig) {
+	public MethodHandlerFactory(RestTemplateBuilder restTemplateBuilder, RemoteConfig remoteConfig,AccessTokenSupplier accessTokenSupplier) {
 		this.restTemplateBuilder = restTemplateBuilder;
 		this.remoteConfig = remoteConfig;
+		this.accessTokenSupplier = accessTokenSupplier ;
 	}
 
 	/**
