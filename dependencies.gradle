@@ -36,3 +36,5 @@ libraries.lombok = "org.projectlombok:lombok"
 libraries.micrometerRegistryPrometheus = "io.micrometer:micrometer-registry-prometheus"
 libraries.okhttp3 = "com.squareup.okhttp3:okhttp"
 libraries.servletApi = "jakarta.servlet:jakarta.servlet-api"
+libraries.fastjson='com.alibaba:fastjson:1.2.76'
+

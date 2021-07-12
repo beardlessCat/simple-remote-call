@@ -2,5 +2,7 @@ dependencies {
 	annotationProcessor libraries.springBootConfigurationProcessor
 	compileOnly libraries.springBootStarterWeb
 	compileOnly libraries.springBootStarterDataRedis
+	compileOnly libraries.fastjson
+
 	implementation project(':common')
 }

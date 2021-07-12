@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.bigyj.client.RestTokenClient;
 import com.bigyj.common.dto.AccessTokenQueryDto;
+import com.bigyj.common.dto.ResponseDto;
 import com.bigyj.common.entity.AccessToken;
 import com.bigyj.config.RemoteConfig;
 import lombok.AllArgsConstructor;
@@ -34,8 +35,10 @@ public class RedisAccessTokenSupplier implements AccessTokenSupplier{
 		}else {
 			logger.error("token失效，请重新获取token");
 			//通过接口获取token
-			accessToken= restTokenClient
-					.getAccessToken(new AccessTokenQueryDto().setClientId(remoteConfig.getClientId()).setSecret(remoteConfig.getSecret()));
+			ResponseDto<AccessToken> result = restTokenClient
+					.getAccessToken(new AccessTokenQueryDto().setClientId(remoteConfig.getClientId())
+							.setSecret(remoteConfig.getSecret()));
+			accessToken = result.getData();
 		}
 		return accessToken;
 	}

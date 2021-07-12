@@ -3,10 +3,16 @@ package com.bigyj.hanlder.method;
 import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.TypeReference;
+import com.bigyj.common.dto.ResponseCommon;
 import com.bigyj.common.entity.AccessToken;
 import com.bigyj.common.exception.ApiException;
+import com.bigyj.common.utils.AESUtil;
 import com.bigyj.domain.RequestDomain;
 import com.bigyj.supplier.AccessTokenSupplier;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import constant.AesConstant;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,6 +25,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+
 @Slf4j
 @AllArgsConstructor
 public class HttpMethodHandler implements MethodHandler{
@@ -66,17 +73,21 @@ public class HttpMethodHandler implements MethodHandler{
 			}
 		}
 	}
-	Object execute(Object params , AccessToken accessToken) throws ClassNotFoundException {
+	Object execute(Object params , AccessToken accessToken) throws Exception {
 		HttpHeaders headers = new HttpHeaders();
 		if(!StringUtils.isEmpty(accessToken.getAccessToken())){
 			headers.add("Authorization", "Bearer "+accessToken.getAccessToken());
 		}
 		headers.add("Content-Type","application/json;charset=utf-8");
 		HttpEntity entity = new HttpEntity<>(params, headers);
-		Class<?> aClass = Class.forName(returnType.getTypeName());
-		ResponseEntity responseEntity = restTemplate.exchange(requestDomain.getValue(), requestDomain.getMethod(), entity,aClass);
+		ResponseEntity<ResponseCommon> responseEntity = restTemplate
+				.exchange(requestDomain.getValue(), requestDomain.getMethod(), entity, ResponseCommon.class);
 		HttpStatus statusCode = responseEntity.getStatusCode();
-		Object body = responseEntity.getBody();
-		return body;
+		ResponseCommon body = responseEntity.getBody();
+		String entryData = body.getEntryData();
+		String decrypt = AESUtil.decrypt(AesConstant.AES_KEY, AesConstant.AES_IV, entryData);
+		ObjectMapper objectMapper = new ObjectMapper();
+		Object result = objectMapper.readValue(decrypt, objectMapper.constructType(returnType));
+		return result;
 	}
 }

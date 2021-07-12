@@ -2,6 +2,9 @@ package com.bigyj.common.entity;
 
 import java.io.Serializable;
 
+import lombok.Data;
+
+@Data
 public class ApiResult<T> implements Serializable {
 	private String code ;
 	private String msg ;
@@ -20,7 +23,7 @@ public class ApiResult<T> implements Serializable {
 		this.data = data;
 	}
 
-	public ApiResult(String code, String msg, T data) {
+	public ApiResult(String code, T data, String msg) {
 		this.code = code;
 		this.msg = msg;
 		this.data = data;
