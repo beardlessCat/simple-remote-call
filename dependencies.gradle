@@ -37,4 +37,4 @@ libraries.micrometerRegistryPrometheus = "io.micrometer:micrometer-registry-prom
 libraries.okhttp3 = "com.squareup.okhttp3:okhttp"
 libraries.servletApi = "jakarta.servlet:jakarta.servlet-api"
 libraries.fastjson='com.alibaba:fastjson:1.2.76'
-
+libraries.redisson='org.redisson:redisson:3.12.5'

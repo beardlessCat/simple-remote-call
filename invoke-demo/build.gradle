@@ -7,6 +7,7 @@ dependencies {
 	implementation libraries.springBootStarterWeb
 	implementation libraries.springBootStarterDataRedis
 	implementation libraries.fastjson
+	implementation libraries.redisson
 
 //	annotationProcessor libraries.springBootConfigurationProcessor
 

@@ -8,6 +8,11 @@ spring:
     database: 0
     host: 127.0.0.1
     port: 6379
+  redisson:
+    host: redis://127.0.0.1:6379
+    connection-timeout: 5000
+
+redisson:
 
 remote:
   config:

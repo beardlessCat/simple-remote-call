@@ -3,6 +3,6 @@ dependencies {
 	compileOnly libraries.springBootStarterWeb
 	compileOnly libraries.springBootStarterDataRedis
 	compileOnly libraries.fastjson
-
+	compileOnly libraries.redisson
 	implementation project(':common')
 }

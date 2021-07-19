@@ -4,6 +4,7 @@ import com.bigyj.client.RestTokenClient;
 import com.bigyj.factory.MethodHandlerFactory;
 import com.bigyj.supplier.AccessTokenSupplier;
 import com.bigyj.supplier.RedisAccessTokenSupplier;
+import org.redisson.api.RedissonClient;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -30,8 +31,8 @@ public class ClientConfig {
 	}
 
 	@Bean
-	AccessTokenSupplier accessTokenSupplier (@Lazy RestTokenClient restTokenClient, RedisTemplate redisTemplate ,RemoteConfig remoteConfig){
-		return new RedisAccessTokenSupplier(restTokenClient,redisTemplate,remoteConfig);
+	AccessTokenSupplier accessTokenSupplier (@Lazy RestTokenClient restTokenClient, RedisTemplate redisTemplate ,RemoteConfig remoteConfig, @Lazy RedissonClient redissonClient){
+		return new RedisAccessTokenSupplier(restTokenClient,redisTemplate,remoteConfig,redissonClient);
 	}
 	@Bean
 	MethodHandlerFactory methodHandlerFactory (RestTemplateBuilder restTemplateBuilder,RemoteConfig remoteConfig ,AccessTokenSupplier accessTokenSupplier){
