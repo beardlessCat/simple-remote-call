@@ -1,4 +1,4 @@
-package com.bigyj.config;
+package com.bigyj;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;

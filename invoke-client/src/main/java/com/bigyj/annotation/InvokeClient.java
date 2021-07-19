@@ -17,4 +17,10 @@ public @interface InvokeClient {
 
 	@AliasFor("value")
 	String path() default "";
+
+	/**
+	 * 客户端调用配置类
+	 * @return
+	 */
+	Class<?>[] configuration() default {};
 }

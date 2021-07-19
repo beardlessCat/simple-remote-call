@@ -2,6 +2,8 @@ package com.bigyj.config;
 
 import java.util.Map;
 
+import com.bigyj.ClientConfigurationcation;
+import com.bigyj.InvokeClientFactoryBean;
 import com.bigyj.annotation.InvokeClient;
 
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
@@ -32,10 +34,15 @@ public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegist
 		AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(InvokeClient.class);
 		scanner.addIncludeFilter(annotationTypeFilter);
 		scanner.findCandidateComponents(BASE_PACKAGE).forEach(beanDefinition -> {
+			/**
+			 * 注册客户端信息
+			 */
 			registryClient(beanDefinition,registry);
 		});
 
 	}
+
+
 
 	private ClassPathScanningCandidateComponentProvider getScanner() {
 		return new ClassPathScanningCandidateComponentProvider(false, this.environment) {
@@ -58,17 +65,44 @@ public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegist
 			AnnotationMetadata metadata = ((AnnotatedBeanDefinition) invokeClient).getMetadata();
 			String className = metadata.getClassName();
 			Map<String, Object> attributes = metadata.getAnnotationAttributes(InvokeClient.class.getCanonicalName());
-			BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(InvokeClientFactoryBean.class);
-			builder.addPropertyValue("type", className);
-			builder.addPropertyValue("path", getPath(attributes));
-			builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
-			AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
-			beanDefinition.setPrimary(true);
-			String alias = "InvokeClient" + className.substring(className.lastIndexOf(".") + 1);
-			BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, className, new String[]{alias});
-			BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
+			//注册client
+			registClientBean(attributes,className,registry);
+			//注册配置信息
+			registryClientConfig(attributes,className,registry);
 		}
 	}
+
+	/**
+	 * 注册配置类
+	 * @param registry
+	 */
+	private void registryClientConfig(Map<String, Object> attributes,String name , BeanDefinitionRegistry registry) {
+		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(ClientConfigurationcation.class);
+		Object configuration = attributes.get("configuration");
+		builder.addConstructorArgValue(name);
+		builder.addConstructorArgValue(configuration);
+		registry.registerBeanDefinition(name + "." + ClientConfigurationcation.class.getSimpleName(),
+				builder.getBeanDefinition());
+	}
+
+	/**
+	 * 注册客户端bean
+	 * @param attributes
+	 * @param className
+	 * @param registry
+	 */
+	private void registClientBean(Map<String, Object> attributes,String className,BeanDefinitionRegistry registry) {
+		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(InvokeClientFactoryBean.class);
+		builder.addPropertyValue("type", className);
+		builder.addPropertyValue("path", getPath(attributes));
+		builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
+		AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
+		beanDefinition.setPrimary(true);
+		String alias = "InvokeClient" + className.substring(className.lastIndexOf(".") + 1);
+		BeanDefinitionHolder holder = new BeanDefinitionHolder(beanDefinition, className, new String[]{alias});
+		BeanDefinitionReaderUtils.registerBeanDefinition(holder, registry);
+	}
+
 	private String getPath(Map<String, Object> attributes) {
 		String path = resolve((String) attributes.get("path"));
 		return getPath(path);
