@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test")
 public class TestController {
-	private static final String KEY ="LOCK:REDIS";
-	private int amount = 1000 ;
 	@Autowired
 	private RequestClient requesClient;
 
@@ -28,32 +26,6 @@ public class TestController {
 	public ResponseDto hello(){
 		ResponseDto<User> user = requesClient.queryUser(new User().setName("小明"));
 		return user ;
-	}
-
-	@GetMapping("lock")
-	public String lock() throws InterruptedException {
-		CountDownLatch latch = new CountDownLatch(1000);
-		RLock lock = redissonClient.getLock(KEY);
-		for (int i = 0; i < 1000; i++) {
-			new Thread(() -> {
-				boolean res = false;
-				try {
-					res = lock.tryLock(100, 10, TimeUnit.SECONDS);
-					if(res){
-						amount--;
-					}
-				}
-				catch (InterruptedException exception) {
-					exception.printStackTrace();
-				}
-				finally{
-					lock.unlock();
-				}
-				latch.countDown();
-			}).start();
-		}
-		latch.await();
-		return "amount:" + amount;
 	}
 
 }
