@@ -1,18 +1,22 @@
 package com.bigyj;
 
-import lombok.Setter;
+import java.beans.ConstructorProperties;
 
-public class ClientConfigurationcation {
-	@Setter
+import lombok.Data;
+
+@Data
+public class ClientConfigurationcation{
+
 	private String name ;
-	@Setter
+
 	private Class<?>[] configuration;
 
-	ClientConfigurationcation(String name, Class<?>[] configuration) {
+	@ConstructorProperties({"name", "configuration"})
+	public ClientConfigurationcation(String name, Class<?>[] configuration) {
 		this.name = name;
 		this.configuration = configuration;
 	}
 
-	ClientConfigurationcation() {
+	public ClientConfigurationcation() {
 	}
 }

@@ -1,11 +1,16 @@
 package com.bigyj.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.bigyj.ClientConfigurationcation;
 import com.bigyj.client.RestTokenClient;
 import com.bigyj.factory.MethodHandlerFactory;
 import com.bigyj.supplier.AccessTokenSupplier;
 import com.bigyj.supplier.RedisAccessTokenSupplier;
 import org.redisson.api.RedissonClient;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -37,5 +42,18 @@ public class ClientConfig {
 	@Bean
 	MethodHandlerFactory methodHandlerFactory (RestTemplateBuilder restTemplateBuilder,RemoteConfig remoteConfig ,AccessTokenSupplier accessTokenSupplier){
 		return new MethodHandlerFactory(restTemplateBuilder,remoteConfig,accessTokenSupplier);
+	}
+
+	/**
+	 * 如何实现自动注入的 fixme
+	 */
+	@Autowired(required = false)
+	private List<ClientConfigurationcation> configurations = new ArrayList<>();
+
+	@Bean
+	public FeignContext feignContext() {
+		FeignContext context = new FeignContext();
+		context.setConfigurations(this.configurations);
+		return context;
 	}
 }

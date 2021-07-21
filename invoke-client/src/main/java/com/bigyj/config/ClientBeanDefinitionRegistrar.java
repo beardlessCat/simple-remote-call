@@ -7,9 +7,11 @@ import com.bigyj.InvokeClientFactoryBean;
 import com.bigyj.annotation.InvokeClient;
 
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.AutowireCandidateQualifier;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionReaderUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -60,16 +62,37 @@ public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegist
 		};
 	}
 
+	/**
+	 * 注册
+	 * @param invokeClient
+	 * @param registry
+	 */
 	private void registryClient(BeanDefinition invokeClient, BeanDefinitionRegistry registry) {
 		if (invokeClient instanceof AnnotatedBeanDefinition) {
 			AnnotationMetadata metadata = ((AnnotatedBeanDefinition) invokeClient).getMetadata();
 			String className = metadata.getClassName();
 			Map<String, Object> attributes = metadata.getAnnotationAttributes(InvokeClient.class.getCanonicalName());
-			//注册client
+			/**
+			 * 注册客户端配置信息
+			 */
+			registryClientConfig(attributes,this.getClientName(attributes),registry);
+			/**
+			 * 注册client
+			 */
 			registClientBean(attributes,className,registry);
-			//注册配置信息
-			registryClientConfig(attributes,className,registry);
 		}
+	}
+
+	/**
+	 * 获取客户端名称
+	 * @return
+	 */
+	private String getClientName(Map<String, Object> client) {
+		String value = (String) client.get("name");
+		if (!StringUtils.hasText(value)) {
+			value = (String) client.get("value");
+		}
+		return value ;
 	}
 
 	/**
@@ -81,8 +104,11 @@ public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegist
 		Object configuration = attributes.get("configuration");
 		builder.addConstructorArgValue(name);
 		builder.addConstructorArgValue(configuration);
-		registry.registerBeanDefinition(name + "." + ClientConfigurationcation.class.getSimpleName(),
-				builder.getBeanDefinition());
+		AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
+		beanDefinition.addQualifier(new AutowireCandidateQualifier(Qualifier.class,name));
+		name = name + "." + ClientConfigurationcation.class.getSimpleName();
+		registry.registerBeanDefinition(name,beanDefinition);
+
 	}
 
 	/**

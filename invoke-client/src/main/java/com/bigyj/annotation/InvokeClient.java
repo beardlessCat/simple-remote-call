@@ -19,6 +19,11 @@ public @interface InvokeClient {
 	String path() default "";
 
 	/**
+	 * 客户端名称
+	 * @return
+	 */
+	String name() default "" ;
+	/**
 	 * 客户端调用配置类
 	 * @return
 	 */

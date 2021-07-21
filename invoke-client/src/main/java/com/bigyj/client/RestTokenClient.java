@@ -7,8 +7,8 @@ import com.bigyj.common.dto.ResponseDto;
 import com.bigyj.common.entity.AccessToken;
 import com.bigyj.config.RemoteCallConfig;
 
-@InvokeClient(value = "/v1/oauth",
-		configuration = {RemoteCallConfig.class,RemoteCallConfig.class})
+@InvokeClient(value = "/v1/oauth",name = "restToken",
+		configuration = {RemoteCallConfig.class})
 public interface RestTokenClient {
 	@InvokeRequest(value = "/getAccessToken",
 			withAccessToken = false,
