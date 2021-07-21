@@ -34,9 +34,6 @@ public class InvokeClientFactoryBean implements FactoryBean<Object>, Application
 		Assert.notNull(methodHandlerFactory, "MethodHandlerFactory must not be null");
 		Map<Method, MethodHandler> dispatch = new ConcurrentHashMap<>();
 		methodHandlerFactory.setClientPath(path);
-		Map<String, RequestInterceptor> beansOfType = applicationContext.getBeansOfType(RequestInterceptor.class);
-		System.out.println(beansOfType);
-		methodHandlerFactory.setRequestInterceptors(null);
 		//获取接口类的全部方法
 		for (Method method : type.getMethods()) {
 			if (method.getDeclaringClass() == Object.class) {

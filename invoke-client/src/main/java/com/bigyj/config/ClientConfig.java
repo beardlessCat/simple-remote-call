@@ -39,16 +39,18 @@ public class ClientConfig {
 	AccessTokenSupplier accessTokenSupplier (@Lazy RestTokenClient restTokenClient, RedisTemplate redisTemplate ,RemoteConfig remoteConfig, @Lazy RedissonClient redissonClient){
 		return new RedisAccessTokenSupplier(restTokenClient,redisTemplate,remoteConfig,redissonClient);
 	}
-	@Bean
-	MethodHandlerFactory methodHandlerFactory (RestTemplateBuilder restTemplateBuilder,RemoteConfig remoteConfig ,AccessTokenSupplier accessTokenSupplier){
-		return new MethodHandlerFactory(restTemplateBuilder,remoteConfig,accessTokenSupplier);
-	}
-
 	/**
 	 * 如何实现自动注入的 fixme
 	 */
 	@Autowired(required = false)
 	private List<ClientConfigurationcation> configurations = new ArrayList<>();
+
+
+	@Bean
+	MethodHandlerFactory methodHandlerFactory (RestTemplateBuilder restTemplateBuilder,RemoteConfig remoteConfig ,AccessTokenSupplier accessTokenSupplier,List<ClientConfigurationcation> configurations){
+		return new MethodHandlerFactory(restTemplateBuilder,remoteConfig,accessTokenSupplier,configurations);
+	}
+
 
 	@Bean
 	public FeignContext feignContext() {

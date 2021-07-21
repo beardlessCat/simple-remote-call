@@ -4,12 +4,12 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import com.bigyj.ClientConfigurationcation;
 import com.bigyj.annotation.InvokeRequest;
 import com.bigyj.config.RemoteConfig;
 import com.bigyj.domain.RequestDomain;
 import com.bigyj.hanlder.method.HttpMethodHandler;
 import com.bigyj.hanlder.method.MethodHandler;
-import com.bigyj.interceptor.RequestInterceptor;
 import com.bigyj.supplier.AccessTokenSupplier;
 import lombok.Data;
 
@@ -22,11 +22,12 @@ public class MethodHandlerFactory {
 	private RemoteConfig remoteConfig;
 	private String clientPath ;
 	private AccessTokenSupplier accessTokenSupplier;
-	private List<RequestInterceptor> requestInterceptors;
-	public MethodHandlerFactory(RestTemplateBuilder restTemplateBuilder, RemoteConfig remoteConfig,AccessTokenSupplier accessTokenSupplier) {
+	private List<ClientConfigurationcation> configurations ;
+	public MethodHandlerFactory(RestTemplateBuilder restTemplateBuilder, RemoteConfig remoteConfig,AccessTokenSupplier accessTokenSupplier,List<ClientConfigurationcation> configurations) {
 		this.restTemplateBuilder = restTemplateBuilder;
 		this.remoteConfig = remoteConfig;
 		this.accessTokenSupplier = accessTokenSupplier ;
+		this.configurations = configurations ;
 	}
 
 	/**
