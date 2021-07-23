@@ -1,14 +1,10 @@
 package com.bigyj;
 
 import com.bigyj.annotation.EnableInvokeClient;
-import com.bigyj.config.RemoteCallConfig;
-import com.bigyj.controller.service.*;
-import com.bigyj.interceptor.RequestInterceptor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @SpringBootApplication
 @EnableInvokeClient

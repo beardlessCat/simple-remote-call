@@ -53,9 +53,12 @@ public class MethodHandlerFactory {
 		//fixme AnnotationConfigApplicationContext#register()方法的作用
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
 		configurations.stream().forEach(configurationcation -> {
-			Arrays.stream(configurationcation.getConfiguration()).forEach(configuration->{
-				context.register(new Class[]{configuration});
-			});
+			//区分客户端进行配置类绑定，进行不同客户端的配置隔离
+			if(name.equals(configurationcation.getName())){
+				Arrays.stream(configurationcation.getConfiguration()).forEach(configuration->{
+					context.register(new Class[]{configuration});
+				});
+			}
 		});
 		context.refresh();
 		contexts.put(name,context);

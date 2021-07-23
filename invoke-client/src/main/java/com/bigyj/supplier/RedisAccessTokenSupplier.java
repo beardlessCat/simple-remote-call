@@ -46,7 +46,7 @@ public class RedisAccessTokenSupplier implements AccessTokenSupplier{
 				if(res){
 					String localToken = this.getRedisToken();
 					if(StringUtils.isEmpty(localToken)){
-						this.getNew();
+						accessToken = this.getNew();
 					}else {
 						accessToken = new AccessToken().setAccessToken(localToken);
 					}
