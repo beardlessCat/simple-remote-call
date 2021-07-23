@@ -48,7 +48,9 @@ public class ClientConfig {
 
 	@Bean
 	MethodHandlerFactory methodHandlerFactory (RestTemplateBuilder restTemplateBuilder,RemoteConfig remoteConfig ,AccessTokenSupplier accessTokenSupplier,List<ClientConfigurationcation> configurations){
-		return new MethodHandlerFactory(restTemplateBuilder,remoteConfig,accessTokenSupplier,configurations);
+		MethodHandlerFactory methodHandlerFactory = new MethodHandlerFactory(restTemplateBuilder, remoteConfig, accessTokenSupplier);
+		methodHandlerFactory.configConfigurations(configurations);
+		return methodHandlerFactory;
 	}
 
 

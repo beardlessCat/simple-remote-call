@@ -121,6 +121,8 @@ public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegist
 		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(InvokeClientFactoryBean.class);
 		builder.addPropertyValue("type", className);
 		builder.addPropertyValue("path", getPath(attributes));
+		builder.addPropertyValue("name", getClientName(attributes));
+
 		builder.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
 		AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
 		beanDefinition.setPrimary(true);

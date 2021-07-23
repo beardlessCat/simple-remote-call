@@ -52,6 +52,10 @@ public class HttpMethodHandler implements MethodHandler{
 		for(;;){
 			try {
 				tryCount++ ;
+				//判断是否有拦截器，进行拦截器执行
+				requestDomain.getRequestInterceptors().stream().forEach(
+					requestInterceptor -> requestInterceptor.apply(null)
+				);
 				return execute(params, accessToken);
 			}catch (ResourceAccessException e){
 				logger.error(requestDomain.getValue()+"接口重试次数"+tryCount);

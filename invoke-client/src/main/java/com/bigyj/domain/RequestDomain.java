@@ -1,5 +1,8 @@
 package com.bigyj.domain;
 
+import java.util.List;
+
+import com.bigyj.interceptor.RequestInterceptor;
 import lombok.Data;
 
 import org.springframework.http.HttpMethod;
@@ -10,4 +13,5 @@ public class RequestDomain {
 	private HttpMethod  method;
 	private boolean withAccessToken;
 	private int maxAttempts ;
+	private List<RequestInterceptor> requestInterceptors ;
 }

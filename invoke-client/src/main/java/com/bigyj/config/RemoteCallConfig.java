@@ -6,7 +6,7 @@ import com.bigyj.interceptor.RequestInterceptor;
 import org.springframework.context.annotation.Bean;
 
 public class RemoteCallConfig {
-	@Bean(name = "remoteCallRequestInterceptor")
+	@Bean
 	public RequestInterceptor remoteCallRequestInterceptor(){
 		return new RemoteCallRequestInterceptor();
 	}

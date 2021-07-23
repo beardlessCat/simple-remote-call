@@ -23,6 +23,8 @@ public class InvokeClientFactoryBean implements FactoryBean<Object>, Application
 	private Class<?> type;
 	@Setter
 	private String path;
+	@Setter
+	private String name ;
 	/**
 	 * 生成代理对象
 	 * @return
@@ -34,7 +36,12 @@ public class InvokeClientFactoryBean implements FactoryBean<Object>, Application
 		Assert.notNull(methodHandlerFactory, "MethodHandlerFactory must not be null");
 		Map<Method, MethodHandler> dispatch = new ConcurrentHashMap<>();
 		methodHandlerFactory.setClientPath(path);
-		//获取接口类的全部方法
+		methodHandlerFactory.setName(name);
+		/**
+		 * 配置Context
+		 */
+		methodHandlerFactory.configContexts();
+		//获取接口类的全部方法;
 		for (Method method : type.getMethods()) {
 			if (method.getDeclaringClass() == Object.class) {
 				continue;
