@@ -12,6 +12,7 @@ import com.bigyj.ClientConfigurationcation;
 import com.bigyj.annotation.InvokeRequest;
 import com.bigyj.config.RemoteConfig;
 import com.bigyj.domain.MethodMetadata;
+import com.bigyj.domain.RequestTemplate;
 import com.bigyj.hanlder.method.HttpMethodHandler;
 import com.bigyj.hanlder.method.MethodHandler;
 import com.bigyj.interceptor.RequestInterceptor;
@@ -77,15 +78,32 @@ public class MethodHandlerFactory {
 		methodMetadata.setMethod(request.method());
 		methodMetadata.setWithAccessToken(request.withAccessToken());
 		methodMetadata.setMaxAttempts(request.maxAttempts());
-		methodMetadata.setRequestInterceptors(this.initRequestInterceptor());
-		return this.createMethodHandler(methodMetadata,returnType,restTemplateBuilder);
+		//
+		RequestTemplate requestTemplate = new RequestTemplate() ;
+		return this.createMethodHandler(methodMetadata,returnType,restTemplateBuilder,this.initRequestInterceptor(),requestTemplate);
 	}
-	private MethodHandler createMethodHandler(MethodMetadata methodMetadata, Type returnType,RestTemplateBuilder restTemplateBuilder){
+
+	/**
+	 * 创建handler对象
+	 * @param methodMetadata
+	 * @param returnType
+	 * @param restTemplateBuilder
+	 * @param requestInterceptors
+	 * @param requestTemplate
+	 * @return
+	 */
+	private MethodHandler createMethodHandler(MethodMetadata methodMetadata,
+			Type returnType,
+			RestTemplateBuilder restTemplateBuilder,
+			List<RequestInterceptor> requestInterceptors,
+			RequestTemplate requestTemplate){
 		return new HttpMethodHandler(
 				methodMetadata,
 				returnType,
 				restTemplateBuilder.build(),
-				accessTokenSupplier);
+				accessTokenSupplier,
+				requestInterceptors,
+				requestTemplate);
 	}
 
 	/**

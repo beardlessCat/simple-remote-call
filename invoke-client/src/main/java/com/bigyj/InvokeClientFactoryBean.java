@@ -8,7 +8,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.bigyj.factory.MethodHandlerFactory;
 import com.bigyj.hanlder.ClientInvocationHandler;
 import com.bigyj.hanlder.method.MethodHandler;
-import com.bigyj.interceptor.RequestInterceptor;
 import lombok.Setter;
 
 import org.springframework.beans.BeansException;

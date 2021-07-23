@@ -1,6 +1,7 @@
 package com.bigyj.hanlder.method;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.bigyj.common.dto.ResponseCommon;
@@ -8,6 +9,8 @@ import com.bigyj.common.entity.AccessToken;
 import com.bigyj.common.exception.ApiException;
 import com.bigyj.common.utils.AESUtil;
 import com.bigyj.domain.MethodMetadata;
+import com.bigyj.domain.RequestTemplate;
+import com.bigyj.interceptor.RequestInterceptor;
 import com.bigyj.supplier.AccessTokenSupplier;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constant.AesConstant;
@@ -31,7 +34,8 @@ public class HttpMethodHandler implements MethodHandler{
 	private Type returnType;
 	private RestTemplate restTemplate ;
 	private AccessTokenSupplier accessTokenSupplier;
-
+	private List<RequestInterceptor> requestInterceptors ;
+	private RequestTemplate requestTemplate ;
 	/**
 	 * 执行远程调用
 	 */
@@ -51,8 +55,8 @@ public class HttpMethodHandler implements MethodHandler{
 			try {
 				tryCount++ ;
 				//判断是否有拦截器，进行拦截器执行
-				methodMetadata.getRequestInterceptors().stream().forEach(
-					requestInterceptor -> requestInterceptor.apply(null)
+				requestInterceptors.stream().forEach(
+					requestInterceptor -> requestInterceptor.apply(requestTemplate)
 				);
 				return execute(params, accessToken);
 			}catch (ResourceAccessException e){

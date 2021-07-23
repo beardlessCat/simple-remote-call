@@ -1,7 +1,7 @@
 package com.bigyj.domain;
 
 import java.io.Serializable;
-import java.util.LinkedHashMap;
+import java.util.HashMap;
 import java.util.Map;
 
 import lombok.Data;
@@ -12,6 +12,6 @@ public class RequestTemplate implements Serializable{
 	/**
 	 * 请求header
 	 */
-	private final Map<String, Object> headers = new LinkedHashMap();
+	private  Map<String, Object> headers = new HashMap<>();
 
 }
