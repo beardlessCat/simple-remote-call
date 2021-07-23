@@ -7,7 +7,7 @@ import com.bigyj.common.dto.ResponseCommon;
 import com.bigyj.common.entity.AccessToken;
 import com.bigyj.common.exception.ApiException;
 import com.bigyj.common.utils.AESUtil;
-import com.bigyj.domain.RequestTemplate;
+import com.bigyj.domain.MethodMetadata;
 import com.bigyj.supplier.AccessTokenSupplier;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constant.AesConstant;
@@ -27,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @AllArgsConstructor
 public class HttpMethodHandler implements MethodHandler{
-	private RequestTemplate requestTemplate;
+	private MethodMetadata methodMetadata;
 	private Type returnType;
 	private RestTemplate restTemplate ;
 	private AccessTokenSupplier accessTokenSupplier;
@@ -42,7 +42,7 @@ public class HttpMethodHandler implements MethodHandler{
 			params = args[0];
 		}
 		AccessToken accessToken = new AccessToken() ;
-		if(requestTemplate.isWithAccessToken()){
+		if(methodMetadata.isWithAccessToken()){
 			accessToken = accessTokenSupplier.get();
 		}
 		int tryCount = 0;
@@ -51,13 +51,13 @@ public class HttpMethodHandler implements MethodHandler{
 			try {
 				tryCount++ ;
 				//判断是否有拦截器，进行拦截器执行
-				requestTemplate.getRequestInterceptors().stream().forEach(
+				methodMetadata.getRequestInterceptors().stream().forEach(
 					requestInterceptor -> requestInterceptor.apply(null)
 				);
 				return execute(params, accessToken);
 			}catch (ResourceAccessException e){
-				logger.error(requestTemplate.getValue()+"接口重试次数"+tryCount);
-				if(tryCount> requestTemplate.getMaxAttempts()){
+				logger.error(methodMetadata.getValue()+"接口重试次数"+tryCount);
+				if(tryCount> methodMetadata.getMaxAttempts()){
 					throw new ApiException("00001","接口调用失败！");
 				}
 				try {
@@ -83,7 +83,7 @@ public class HttpMethodHandler implements MethodHandler{
 		headers.add("Content-Type","application/json;charset=utf-8");
 		HttpEntity entity = new HttpEntity<>(params, headers);
 		ResponseEntity<ResponseCommon> responseEntity = restTemplate
-				.exchange(requestTemplate.getValue(), requestTemplate.getMethod(), entity, ResponseCommon.class);
+				.exchange(methodMetadata.getValue(), methodMetadata.getMethod(), entity, ResponseCommon.class);
 		HttpStatus statusCode = responseEntity.getStatusCode();
 		ResponseCommon body = responseEntity.getBody();
 		String entryData = body.getEntryData();

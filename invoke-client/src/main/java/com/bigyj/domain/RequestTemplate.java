@@ -1,17 +1,17 @@
 package com.bigyj.domain;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import com.bigyj.interceptor.RequestInterceptor;
 import lombok.Data;
 
-import org.springframework.http.HttpMethod;
-
 @Data
-public class RequestTemplate {
-	private String value;
-	private HttpMethod  method;
-	private boolean withAccessToken;
-	private int maxAttempts ;
-	private List<RequestInterceptor> requestInterceptors ;
+public class RequestTemplate implements Serializable{
+
+	/**
+	 * 请求header
+	 */
+	private final Map<String, Object> headers = new LinkedHashMap();
+
 }

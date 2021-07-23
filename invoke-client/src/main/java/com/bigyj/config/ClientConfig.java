@@ -1,6 +1,5 @@
 package com.bigyj.config;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.bigyj.ClientConfigurationcation;
@@ -10,7 +9,6 @@ import com.bigyj.supplier.AccessTokenSupplier;
 import com.bigyj.supplier.RedisAccessTokenSupplier;
 import org.redisson.api.RedissonClient;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,13 +37,7 @@ public class ClientConfig {
 	AccessTokenSupplier accessTokenSupplier (@Lazy RestTokenClient restTokenClient, RedisTemplate redisTemplate ,RemoteConfig remoteConfig, @Lazy RedissonClient redissonClient){
 		return new RedisAccessTokenSupplier(restTokenClient,redisTemplate,remoteConfig,redissonClient);
 	}
-	/**
-	 * 如何实现自动注入的 fixme
-	 */
-	@Autowired(required = false)
-	private List<ClientConfigurationcation> configurations = new ArrayList<>();
-
-
+	//fixme configurations 是如何注入进来的
 	@Bean
 	MethodHandlerFactory methodHandlerFactory (RestTemplateBuilder restTemplateBuilder,RemoteConfig remoteConfig ,AccessTokenSupplier accessTokenSupplier,List<ClientConfigurationcation> configurations){
 		MethodHandlerFactory methodHandlerFactory = new MethodHandlerFactory(restTemplateBuilder, remoteConfig, accessTokenSupplier);
@@ -53,11 +45,4 @@ public class ClientConfig {
 		return methodHandlerFactory;
 	}
 
-
-	@Bean
-	public FeignContext feignContext() {
-		FeignContext context = new FeignContext();
-		context.setConfigurations(this.configurations);
-		return context;
-	}
 }
