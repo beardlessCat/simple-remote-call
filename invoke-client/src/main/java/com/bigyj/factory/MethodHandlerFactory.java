@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.bigyj.ClientConfigurationcation;
 import com.bigyj.annotation.InvokeRequest;
 import com.bigyj.config.RemoteConfig;
-import com.bigyj.domain.RequestDomain;
+import com.bigyj.domain.RequestTemplate;
 import com.bigyj.hanlder.method.HttpMethodHandler;
 import com.bigyj.hanlder.method.MethodHandler;
 import com.bigyj.interceptor.RequestInterceptor;
@@ -71,18 +71,18 @@ public class MethodHandlerFactory {
 	public MethodHandler fromMethod(Method method) {
 		System.out.println(contexts);
 		InvokeRequest request = AnnotatedElementUtils.findMergedAnnotation(method, InvokeRequest.class);
-		RequestDomain requestDomain = new RequestDomain();
+		RequestTemplate requestTemplate = new RequestTemplate();
 		Type returnType = method.getGenericReturnType();
-		requestDomain.setValue(remoteConfig.getRemoteUrl()+clientPath+request.value());
-		requestDomain.setMethod(request.method());
-		requestDomain.setWithAccessToken(request.withAccessToken());
-		requestDomain.setMaxAttempts(request.maxAttempts());
-		requestDomain.setRequestInterceptors(this.initRequestInterceptor());
-		return this.createMethodHandler(requestDomain,returnType,restTemplateBuilder);
+		requestTemplate.setValue(remoteConfig.getRemoteUrl()+clientPath+request.value());
+		requestTemplate.setMethod(request.method());
+		requestTemplate.setWithAccessToken(request.withAccessToken());
+		requestTemplate.setMaxAttempts(request.maxAttempts());
+		requestTemplate.setRequestInterceptors(this.initRequestInterceptor());
+		return this.createMethodHandler(requestTemplate,returnType,restTemplateBuilder);
 	}
-	private MethodHandler createMethodHandler(RequestDomain requestDomain, Type returnType,RestTemplateBuilder restTemplateBuilder){
+	private MethodHandler createMethodHandler(RequestTemplate requestTemplate, Type returnType,RestTemplateBuilder restTemplateBuilder){
 		return new HttpMethodHandler(
-				requestDomain,
+				requestTemplate,
 				returnType,
 				restTemplateBuilder.build(),
 				accessTokenSupplier);

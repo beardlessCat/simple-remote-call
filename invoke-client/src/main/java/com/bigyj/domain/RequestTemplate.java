@@ -8,7 +8,7 @@ import lombok.Data;
 import org.springframework.http.HttpMethod;
 
 @Data
-public class RequestDomain {
+public class RequestTemplate {
 	private String value;
 	private HttpMethod  method;
 	private boolean withAccessToken;

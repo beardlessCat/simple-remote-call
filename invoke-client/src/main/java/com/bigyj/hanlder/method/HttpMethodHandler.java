@@ -3,13 +3,11 @@ package com.bigyj.hanlder.method;
 import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
 import com.bigyj.common.dto.ResponseCommon;
 import com.bigyj.common.entity.AccessToken;
 import com.bigyj.common.exception.ApiException;
 import com.bigyj.common.utils.AESUtil;
-import com.bigyj.domain.RequestDomain;
+import com.bigyj.domain.RequestTemplate;
 import com.bigyj.supplier.AccessTokenSupplier;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import constant.AesConstant;
@@ -29,7 +27,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @AllArgsConstructor
 public class HttpMethodHandler implements MethodHandler{
-	private RequestDomain requestDomain;
+	private RequestTemplate requestTemplate;
 	private Type returnType;
 	private RestTemplate restTemplate ;
 	private AccessTokenSupplier accessTokenSupplier;
@@ -44,7 +42,7 @@ public class HttpMethodHandler implements MethodHandler{
 			params = args[0];
 		}
 		AccessToken accessToken = new AccessToken() ;
-		if(requestDomain.isWithAccessToken()){
+		if(requestTemplate.isWithAccessToken()){
 			accessToken = accessTokenSupplier.get();
 		}
 		int tryCount = 0;
@@ -53,13 +51,13 @@ public class HttpMethodHandler implements MethodHandler{
 			try {
 				tryCount++ ;
 				//判断是否有拦截器，进行拦截器执行
-				requestDomain.getRequestInterceptors().stream().forEach(
+				requestTemplate.getRequestInterceptors().stream().forEach(
 					requestInterceptor -> requestInterceptor.apply(null)
 				);
 				return execute(params, accessToken);
 			}catch (ResourceAccessException e){
-				logger.error(requestDomain.getValue()+"接口重试次数"+tryCount);
-				if(tryCount>requestDomain.getMaxAttempts()){
+				logger.error(requestTemplate.getValue()+"接口重试次数"+tryCount);
+				if(tryCount> requestTemplate.getMaxAttempts()){
 					throw new ApiException("00001","接口调用失败！");
 				}
 				try {
@@ -85,7 +83,7 @@ public class HttpMethodHandler implements MethodHandler{
 		headers.add("Content-Type","application/json;charset=utf-8");
 		HttpEntity entity = new HttpEntity<>(params, headers);
 		ResponseEntity<ResponseCommon> responseEntity = restTemplate
-				.exchange(requestDomain.getValue(), requestDomain.getMethod(), entity, ResponseCommon.class);
+				.exchange(requestTemplate.getValue(), requestTemplate.getMethod(), entity, ResponseCommon.class);
 		HttpStatus statusCode = responseEntity.getStatusCode();
 		ResponseCommon body = responseEntity.getBody();
 		String entryData = body.getEntryData();
