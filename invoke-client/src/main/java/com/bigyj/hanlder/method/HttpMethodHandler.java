@@ -80,11 +80,7 @@ public class HttpMethodHandler implements MethodHandler{
 		}
 	}
 	Object execute(Object params , AccessToken accessToken) throws Exception {
-		HttpHeaders headers = new HttpHeaders();
-		if(!StringUtils.isEmpty(accessToken.getAccessToken())){
-			headers.add("Authorization", "Bearer "+accessToken.getAccessToken());
-		}
-		headers.add("Content-Type","application/json;charset=utf-8");
+		HttpHeaders headers = configHeaders(accessToken);
 		HttpEntity entity = new HttpEntity<>(params, headers);
 		ResponseEntity<ResponseCommon> responseEntity = restTemplate
 				.exchange(methodMetadata.getValue(), methodMetadata.getMethod(), entity, ResponseCommon.class);
@@ -95,5 +91,22 @@ public class HttpMethodHandler implements MethodHandler{
 		ObjectMapper objectMapper = new ObjectMapper();
 		Object result = objectMapper.readValue(decrypt, objectMapper.constructType(returnType));
 		return result;
+	}
+
+	/**
+	 * 配置请求header
+	 * @param accessToken
+	 * @return
+	 */
+	private HttpHeaders configHeaders(AccessToken accessToken) {
+		HttpHeaders headers = new HttpHeaders();
+		if(!StringUtils.isEmpty(accessToken.getAccessToken())){
+			headers.add("Authorization", "Bearer "+accessToken.getAccessToken());
+		}
+		requestTemplate.getHeaders().forEach((key,value)->{
+			headers.add("key", value);
+		});
+		headers.add("Content-Type","application/json;charset=utf-8");
+		return headers;
 	}
 }

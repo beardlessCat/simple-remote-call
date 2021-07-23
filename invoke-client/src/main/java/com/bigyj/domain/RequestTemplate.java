@@ -12,6 +12,6 @@ public class RequestTemplate implements Serializable{
 	/**
 	 * 请求header
 	 */
-	private  Map<String, Object> headers = new HashMap<>();
+	private  Map<String, String> headers = new HashMap<>();
 
 }
