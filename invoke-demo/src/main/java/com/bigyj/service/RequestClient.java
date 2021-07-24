@@ -1,4 +1,4 @@
-package com.bigyj.client;
+package com.bigyj.service;
 
 import com.bigyj.annotation.InvokeClient;
 import com.bigyj.annotation.InvokeRequest;

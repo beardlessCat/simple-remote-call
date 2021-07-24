@@ -21,8 +21,7 @@ public class HeaderRequestInterceptor implements RequestInterceptor{
 		//RequestContextHolder 通过RequestContextHolder#getRequestAttributes()方法获取请求对象
 		RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
 		if (requestAttributes instanceof ServletRequestAttributes) {
-			Map<String, Object> headers = requestTemplate.getHeaders();
-
+			Map<String, String> headers = requestTemplate.getHeaders();
 			HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
 			Enumeration headerNames = request.getHeaderNames();
 			while (headerNames.hasMoreElements()) {

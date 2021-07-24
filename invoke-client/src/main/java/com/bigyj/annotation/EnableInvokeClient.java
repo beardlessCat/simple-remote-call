@@ -15,4 +15,10 @@ import org.springframework.context.annotation.Import;
 @Documented
 @Import({ ClientBeanDefinitionRegistrar.class})
 public @interface EnableInvokeClient {
+	/**
+	 * 客户端扫描根路径
+	 * @return
+	 */
+	String[] basePackages() default {};
+
 }

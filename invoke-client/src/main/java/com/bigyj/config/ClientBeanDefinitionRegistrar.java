@@ -1,9 +1,12 @@
 package com.bigyj.config;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import com.bigyj.ClientConfigurationcation;
 import com.bigyj.InvokeClientFactoryBean;
+import com.bigyj.annotation.EnableInvokeClient;
 import com.bigyj.annotation.InvokeClient;
 
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
@@ -23,25 +26,31 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, EnvironmentAware {
 	private Environment environment;
 	private ResourceLoader resourceLoader;
-	private static final String BASE_PACKAGE ="com.bigyj.client";
 	@Override
 	public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 		ClassPathScanningCandidateComponentProvider scanner = this.getScanner();
 		scanner.setResourceLoader(resourceLoader);
+		/**
+		 * 获取扫描包路径
+		 */
+		Set<String> basePackages = getBasePackages(importingClassMetadata);
 		AnnotationTypeFilter annotationTypeFilter = new AnnotationTypeFilter(InvokeClient.class);
 		scanner.addIncludeFilter(annotationTypeFilter);
-		scanner.findCandidateComponents(BASE_PACKAGE).forEach(beanDefinition -> {
-			/**
-			 * 注册客户端信息
-			 */
-			registryClient(beanDefinition,registry);
+		//循环扫描多个包，进行注入
+		basePackages.stream().forEach(basePackage->{
+			scanner.findCandidateComponents(basePackage).forEach(beanDefinition -> {
+				/**
+				 * 注册客户端信息
+				 */
+				registryClient(beanDefinition,registry);
+			});
 		});
-
 	}
 
 
@@ -154,6 +163,29 @@ public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegist
 			}
 		}
 		return path;
+	}
+
+	/**
+	 * 获取包扫描路径
+	 * @param importingClassMetadata
+	 * @return
+	 */
+	private Set<String> getBasePackages(AnnotationMetadata importingClassMetadata) {
+		Map<String, Object> attributes = importingClassMetadata
+				.getAnnotationAttributes(EnableInvokeClient.class.getCanonicalName());
+
+		Set<String> basePackages = new HashSet<>();
+		for (String pkg : (String[]) attributes.get("basePackages")) {
+			if (StringUtils.hasText(pkg)) {
+				basePackages.add(pkg);
+			}
+		}
+		//若未维护包名，则获取当前启动类所在的目录
+		if (basePackages.isEmpty()) {
+			basePackages.add(
+					ClassUtils.getPackageName(importingClassMetadata.getClassName()));
+		}
+		return basePackages;
 	}
 	@Override
 	public void setEnvironment(Environment environment) {

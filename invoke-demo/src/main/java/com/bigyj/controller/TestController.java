@@ -1,8 +1,9 @@
 package com.bigyj.controller;
 
-import com.bigyj.client.RequestClient;
 import com.bigyj.common.dto.ResponseDto;
 import com.bigyj.common.entity.User;
+import com.bigyj.service.RequestClient;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
