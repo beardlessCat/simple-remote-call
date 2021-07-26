@@ -1,4 +1,6 @@
 # simple-remote-call说明文档
+![base64str]
+
 ## 一. 为什么会想到编写此项目
 ### 1. 背景
 在工作中，经常会遇到与其他业务系统进行通讯交互，无非是通过调用对方的http接口进行数据的交互,少则一个，多则几十个。
@@ -40,7 +42,10 @@ public interface RequesClient {
 ## 四.功能原理
 整个功能要实现最主要需要完成两点：远程调用client自动注入及动态代理生成生成客户端实现类进行远程调用处理。当这两个点完成后，其他的就剩下一下
 代理逻辑的处理了。
-### 1. 远程调用client自动注入
+### 1. openFeign原理 
+![Alt text](https://img-blog.csdnimg.cn/189008c337f2470d954573e103fa0ce8.png)
+
+### 2. 远程调用client自动注入
 通过ImportBeanDefinitionRegistrar进行依赖注入
 ```java
 public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, EnvironmentAware {
@@ -66,7 +71,7 @@ public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegist
 	}
 }
 ```
-### 2. 动态代理生成客户端实现类
+### 3. 动态代理生成客户端实现类
 通过自定义FactoryBean，在getObject方法中使用代理模式，动态生成相关类
 ```java
 public class InvokeClientFactoryBean implements FactoryBean<Object>, ApplicationContextAware {
@@ -96,5 +101,3 @@ public class InvokeClientFactoryBean implements FactoryBean<Object>, Application
 	}
 }
 ```
-
-
