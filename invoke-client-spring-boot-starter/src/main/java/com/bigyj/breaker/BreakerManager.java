@@ -12,16 +12,37 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class BreakerManager {
+	/**
+	 * 最大失败次数
+	 */
 	private static final int MAX_FAIL_COUNT = 10 ;
-	private static final int MAX_TIME_OUT = 10 ;
+
+	/**
+	 * 最大成功次数
+	 */
+	private static final int MAX_SUCCESS_COUNT = 3 ;
+
+	/**
+	 * 熔断后接口重试最大时间
+	 */
+	public static final long MAX_CLOSE_TO_TRY_TIME = 5000L ;
+
 	/**
 	 * 失败次数
 	 */
 	private int failCount ;
+
 	/**
-	 * 超时时间
+	 * 成功次数
 	 */
-	private int timeOut;
+	private int successCount ;
+
+	/**
+	 * 接口熔断时间
+	 */
+	private long closeAt;
+
+
 	/**
 	 *当前状态
 	 */
@@ -29,32 +50,45 @@ public class BreakerManager {
 
 	public void addFailCount(){
 		Breaker.BreakStatus currentStatus = getCurrentStatus();
-		int count = this.failCount++;
-		if(count>=10){
+		this.failCount++ ;
+		if(this.failCount>=MAX_FAIL_COUNT){
 			this.toCloseStatus();
+			//记录当前开始熔断时刻
+			long closeAt = System.currentTimeMillis();
+			this.closeAt = closeAt;
 		}
-		this.setFailCount(count);
 	}
 
+	public void addSuccessCount(){
+		this.successCount++ ;
+		if(this.successCount>MAX_SUCCESS_COUNT){
+			toOpenStatus();
+			this.closeAt = 0;
+			this.successCount=0;
+			this.failCount=0;
+		}
+	}
 	/**
 	 * 变为OPEN状态
 	 */
 	public void toOpenStatus(){
-		currentStatus = Breaker.BreakStatus.OPEN;
+		this.currentStatus = Breaker.BreakStatus.OPEN;
+		System.out.println("【接口已恢复】");
 	}
 
 	/**
 	 * 变为CLOSE状态
 	 */
 	public void toCloseStatus(){
-		currentStatus = Breaker.BreakStatus.CLOSE;
-
+		this.currentStatus = Breaker.BreakStatus.CLOSE;
+		System.out.println("【接口熔断】");
 	}
 
 	/**
 	 * 变为HALFOPEN状态
 	 */
 	public void toHalfOpenStatus(){
-		currentStatus = Breaker.BreakStatus.HALFOPEN;
+		this.currentStatus = Breaker.BreakStatus.HALFOPEN;
+		System.out.println("【接口半恢复恢复】");
 	}
 }

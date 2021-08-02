@@ -11,62 +11,76 @@ public class Test {
 	private static  Map<String,BreakerManager>  breakerManagers = new HashMap<>();
 	private static  String interfaceId = "callInterface" ;
 	public static void main(String[] args)  {
-		BreakerManager manager = getBreakManagerByInterface(interfaceId);
-		if(manager == null){
-			for(int i= 0;i<20;i++){
-				//模拟接口调用
-				try {
-					callInterface(i);
-				}
-				catch (InterruptedException e) {
-					//出现异常，增加失败次数
-					manager  = new BreakerManager(0,10, Breaker.BreakStatus.OPEN);
-					manager.addFailCount();
-					breakerManagers.put(interfaceId,manager);
-				}
-			}
-		}else {
-			Breaker.BreakStatus currentStatus = manager.getCurrentStatus();
-
-			int failCount = manager.getFailCount();
-			int timeOut = manager.getTimeOut();
-			if(currentStatus== Breaker.BreakStatus.OPEN){
-				//断路器OPNE状态，直接进行接口调用
-				//
-			}else if(currentStatus== Breaker.BreakStatus.HALFOPEN){
-				//半恢复，尝试一次，
-				//成功，回复open状态
-
-				//失败，增加失败次数
-				manager.addFailCount();
+		for(int i= 0;i<25;i++){
+			BreakerManager manager = getBreakManagerByInterface(interfaceId);
+			if(manager == null){
+				manager  = new BreakerManager(0,0, 0,Breaker.BreakStatus.OPEN);
+				openCall(i,manager);
 			}else {
-				//熔断,增加失败此时(加锁处理)
-
+				Breaker.BreakStatus currentStatus = manager.getCurrentStatus();
+				int failCount = manager.getFailCount();
+				int closeAt = (int) manager.getCloseAt();
+				if(currentStatus== Breaker.BreakStatus.OPEN){
+					//断路器OPNE状态，直接进行接口调用
+					openCall(i,manager);
+				}else if(currentStatus== Breaker.BreakStatus.HALFOPEN){
+					//半恢复，尝试一次，
+					//成功，回复open状态
+					//失败，增加失败次数
+					manager.addFailCount();
+				}else {
+					//熔断,增加失败此时(加锁处理)
+					System.out.println("接口熔断");
+					long now = System.currentTimeMillis();
+					if(now - closeAt >= BreakerManager.MAX_CLOSE_TO_TRY_TIME){
+						System.out.println("接口熔断时间到达最大值，开始尝试调用接口");
+						openCall(i,manager);
+					}
+				}
 			}
+		}
+	}
 
+	private static void openCall(int i,BreakerManager manager) {
+		//模拟接口调用
+		try {
+			callInterface(i);
+			if(manager.getCurrentStatus() != Breaker.BreakStatus.OPEN){
+				if(manager.getCurrentStatus() == Breaker.BreakStatus.CLOSE){
+					manager.toHalfOpenStatus();
+				}
+				manager.addSuccessCount();
+			}
+		}catch (InterruptedException e) {
+			//出现异常，增加失败次数
+			manager.addFailCount();
+			breakerManagers.put(interfaceId,manager);
+		}finally {
+			if(manager!=null){
+				System.out.println(manager.toString());
+			}
 		}
 	}
 
 	private static void callInterface(int i) throws InterruptedException {
-		if(i<5){
+		if(i<1){
 			//open状态
-			TimeUnit.SECONDS.sleep(2);
+			TimeUnit.SECONDS.sleep(1);
 			System.out.println("接口调用成功");
 		}else if(i<12){
 			//模拟接口调用失败，进入close状态
-			TimeUnit.SECONDS.sleep(2);
+			TimeUnit.SECONDS.sleep(1);
 			System.out.println("接口调用失败");
 			throw new InterruptedException();
 		}else if(i==12){
 			//模拟接口调用成功异常，进入半恢复状态图
-			TimeUnit.SECONDS.sleep(2);
+			TimeUnit.SECONDS.sleep(1);
 			System.out.println("接口调用成功");
 		}else {
 			//进入open状态
-			TimeUnit.SECONDS.sleep(2);
+			TimeUnit.SECONDS.sleep(1);
 			System.out.println("接口调用成功");
 		}
-		System.out.println(breakerManagers.get(interfaceId).toString());
 	}
 
 	private static BreakerManager getBreakManagerByInterface(String interfaceId) {
