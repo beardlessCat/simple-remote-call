@@ -6,7 +6,7 @@ import lombok.ToString;
 
 /**
  *
- * OPEN-------[failCouint>MAX_FAIL_COUNT]--------->CLOSE-------[time>timeOut]--------->HALFOPEN--------[SUCCESS]-------->OPEN
+ * CLOES-------[failCouint>MAX_FAIL_COUNT]--------->OPEN-------[time>timeOut]--------->HALFOPEN--------[SUCCESS]-------->CLOSE
  */
 @Data
 @AllArgsConstructor
@@ -52,7 +52,7 @@ public class BreakerManager {
 		Breaker.BreakStatus currentStatus = getCurrentStatus();
 		this.failCount++ ;
 		if(this.failCount>=MAX_FAIL_COUNT){
-			this.toCloseStatus();
+			this.toOpenStatus();
 			//记录当前开始熔断时刻
 			long closeAt = System.currentTimeMillis();
 			this.closeAt = closeAt;
@@ -62,7 +62,7 @@ public class BreakerManager {
 	public void addSuccessCount(){
 		this.successCount++ ;
 		if(this.successCount>MAX_SUCCESS_COUNT){
-			toOpenStatus();
+			toCloseStatus();
 			this.closeAt = 0;
 			this.successCount=0;
 			this.failCount=0;
@@ -73,7 +73,7 @@ public class BreakerManager {
 	 */
 	public void toOpenStatus(){
 		this.currentStatus = Breaker.BreakStatus.OPEN;
-		System.out.println("【接口已恢复】");
+		System.out.println("【接口熔断】");
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class BreakerManager {
 	 */
 	public void toCloseStatus(){
 		this.currentStatus = Breaker.BreakStatus.CLOSE;
-		System.out.println("【接口熔断】");
+		System.out.println("【接口回复】");
 	}
 
 	/**

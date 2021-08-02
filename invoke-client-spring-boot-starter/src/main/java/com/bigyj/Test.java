@@ -1,7 +1,9 @@
 package com.bigyj;
 
+import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.bigyj.breaker.Breaker;
@@ -18,13 +20,17 @@ public class Test {
 				openCall(i,manager);
 			}else {
 				Breaker.BreakStatus currentStatus = manager.getCurrentStatus();
-				int failCount = manager.getFailCount();
 				int closeAt = (int) manager.getCloseAt();
 				if(currentStatus== Breaker.BreakStatus.OPEN){
 					//断路器OPNE状态，直接进行接口调用
 					openCall(i,manager);
 				}else if(currentStatus== Breaker.BreakStatus.HALFOPEN){
-					//半恢复，尝试一次，
+					SecureRandom secureRandom = new SecureRandom();
+					int x = secureRandom.nextInt(10);
+					if(x>5){
+						//半恢复，随机尝试一次，
+						openCall(i,manager);
+					}
 					//成功，回复open状态
 					//失败，增加失败次数
 					manager.addFailCount();
