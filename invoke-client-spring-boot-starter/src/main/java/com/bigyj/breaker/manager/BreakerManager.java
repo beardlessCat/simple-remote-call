@@ -1,5 +1,6 @@
-package com.bigyj.breaker;
+package com.bigyj.breaker.manager;
 
+import com.bigyj.breaker.Breaker;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
@@ -11,21 +12,8 @@ import lombok.ToString;
 @Data
 @AllArgsConstructor
 @ToString
-public class BreakerManager {
-	/**
-	 * 最大失败次数
-	 */
-	private static final int MAX_FAIL_COUNT = 10 ;
+public class BreakerManager{
 
-	/**
-	 * 最大成功次数
-	 */
-	private static final int MAX_SUCCESS_COUNT = 3 ;
-
-	/**
-	 * 熔断后接口重试最大时间
-	 */
-	public static final long MAX_CLOSE_TO_TRY_TIME = 5000L ;
 
 	/**
 	 * 失败次数
@@ -42,26 +30,36 @@ public class BreakerManager {
 	 */
 	private long closeAt;
 
+	/**
+	 * 最大失败次数
+	 */
+	private int maxFailCount ;
+
+	/**
+	 * 最大成功次数
+	 */
+	private int maxSuccessCount;
+
 
 	/**
 	 *当前状态
 	 */
 	private Breaker.BreakStatus currentStatus;
-
-	public void addFailCount(){
+	
+	public synchronized void  addFailCount(){
 		Breaker.BreakStatus currentStatus = getCurrentStatus();
 		this.failCount++ ;
-		if(this.failCount>=MAX_FAIL_COUNT){
+		if(this.failCount>=this.maxFailCount){
 			this.toOpenStatus();
 			//记录当前开始熔断时刻
 			long closeAt = System.currentTimeMillis();
 			this.closeAt = closeAt;
 		}
 	}
-
-	public void addSuccessCount(){
+	
+	public synchronized void addSuccessCount(){
 		this.successCount++ ;
-		if(this.successCount>MAX_SUCCESS_COUNT){
+		if(this.successCount>this.maxSuccessCount){
 			toCloseStatus();
 			this.closeAt = 0;
 			this.successCount=0;
@@ -71,6 +69,7 @@ public class BreakerManager {
 	/**
 	 * 变为OPEN状态
 	 */
+	
 	public void toOpenStatus(){
 		this.currentStatus = Breaker.BreakStatus.OPEN;
 		System.out.println("【接口熔断】");
@@ -79,6 +78,7 @@ public class BreakerManager {
 	/**
 	 * 变为CLOSE状态
 	 */
+	
 	public void toCloseStatus(){
 		this.currentStatus = Breaker.BreakStatus.CLOSE;
 		System.out.println("【接口回复】");

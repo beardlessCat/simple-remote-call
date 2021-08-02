@@ -3,14 +3,13 @@ package com.bigyj;
 import java.security.SecureRandom;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import com.bigyj.breaker.Breaker;
-import com.bigyj.breaker.BreakerManager;
+import com.bigyj.breaker.manager.BreakerManager;
 
 public class Test {
-	private static  Map<String,BreakerManager>  breakerManagers = new HashMap<>();
+	/*private static  Map<String, BreakerManager>  breakerManagers = new HashMap<>();
 	private static  String interfaceId = "callInterface" ;
 	public static void main(String[] args)  {
 		for(int i= 0;i<25;i++){
@@ -47,7 +46,7 @@ public class Test {
 		}
 	}
 
-	private static void openCall(int i,BreakerManager manager) {
+	private static void openCall(int i, BreakerManager manager) {
 		//模拟接口调用
 		try {
 			callInterface(i);
@@ -91,5 +90,5 @@ public class Test {
 
 	private static BreakerManager getBreakManagerByInterface(String interfaceId) {
 		return breakerManagers.get(interfaceId);
-	}
+	}*/
 }

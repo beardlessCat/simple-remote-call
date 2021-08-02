@@ -1,5 +1,6 @@
 package com.bigyj.service;
 
+import com.bigyj.annotation.BreakerCommand;
 import com.bigyj.annotation.InvokeClient;
 import com.bigyj.annotation.InvokeRequest;
 import com.bigyj.common.dto.ResponseDto;
@@ -13,5 +14,6 @@ import org.springframework.http.HttpMethod;
 		configuration = {RemoteCallConfig.class})
 public interface RequestClient {
 	@InvokeRequest(value = "/queryUser",method = HttpMethod.POST,maxAttempts = 5)
+	@BreakerCommand
 	public ResponseDto<User> queryUser(User user);
 }

@@ -25,7 +25,6 @@ libraries.springBootStarterThymeleaf = "org.springframework.boot:spring-boot-sta
 libraries.springBootStarterValidation = "org.springframework.boot:spring-boot-starter-validation"
 libraries.springBootStarterWeb = "org.springframework.boot:spring-boot-starter-web"
 libraries.springDataCommons = "org.springframework.data:spring-data-commons"
-
 libraries.commonsLang3 = 'org.apache.commons:commons-lang3'
 libraries.httpComponents = "org.apache.httpcomponents:httpclient"
 libraries.jpa = "jakarta.persistence:jakarta.persistence-api"

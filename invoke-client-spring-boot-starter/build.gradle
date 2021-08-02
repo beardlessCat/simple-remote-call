@@ -4,5 +4,6 @@ dependencies {
 	compileOnly libraries.springBootStarterDataRedis
 	compileOnly libraries.fastjson
 	compileOnly libraries.redisson
+	implementation libraries.springBootStarterAop
 	implementation project(':common')
 }
