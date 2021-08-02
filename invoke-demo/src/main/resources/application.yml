@@ -19,3 +19,8 @@ remote:
     secret: 123456
     clientId: 1212121
     remoteUrl: http://127.0.0.1:8080
+
+breaker:
+  maxCloseToTryTime: -1
+  maxFailCount: -1
+  maxSuccessCount: -1

@@ -7,4 +7,7 @@ public interface BreakerManagerHolder {
 	BreakerManager get(String targetName);
 
 	void manage(String targetName , BreakerManager breakerManager) ;
+
+	BreakerManager create();
+
 }

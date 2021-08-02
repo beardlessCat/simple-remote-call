@@ -13,7 +13,7 @@ import org.springframework.http.HttpMethod;
 		name = "requestClient",
 		configuration = {RemoteCallConfig.class})
 public interface RequestClient {
-	@InvokeRequest(value = "/queryUser",method = HttpMethod.POST,maxAttempts = 5)
+	@InvokeRequest(value = "/queryUser",method = HttpMethod.POST)
 	@BreakerCommand
 	public ResponseDto<User> queryUser(User user);
 }

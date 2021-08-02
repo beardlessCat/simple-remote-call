@@ -12,4 +12,9 @@ public class RedisBreakerManagerHolder implements BreakerManagerHolder{
 	public void manage(String targetName, BreakerManager breakerManager) {
 
 	}
+
+	@Override
+	public BreakerManager create() {
+		return null;
+	}
 }

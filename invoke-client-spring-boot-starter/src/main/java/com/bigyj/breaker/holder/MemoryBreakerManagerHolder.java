@@ -16,4 +16,9 @@ public class MemoryBreakerManagerHolder implements BreakerManagerHolder{
 		//fixme		breakerManagers.putIfAbsent(targetName,breakerManager)
 		breakerManagers.put(targetName,breakerManager);
 	}
+
+	@Override
+	public BreakerManager create() {
+		return null;
+	}
 }
