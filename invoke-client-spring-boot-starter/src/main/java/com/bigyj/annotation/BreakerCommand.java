@@ -13,15 +13,21 @@ public @interface BreakerCommand {
 	/**
 	* 最大失败次数
 	*/
-	int maxFailCount() default 10;
+	int maxFailCount() default 3;
 
 	/**
-	 * 熔断后接口重试最大时间
+	 * 半恢复后接口重试最大成功次数
 	 */
 	int maxSuccessCount() default 5;
 
 	/**
 	 * 熔断后接口重试最大时间
 	 */
-	int maxCloseToTryTime() default  5000;
+	int maxOpenToTryTime() default  10*1000;
+
+	/**
+	 * 接口熔后，到达最大口重试最大时间后，最多尝试次数
+	 * @return
+	 */
+	int maxOpenRetryCount() default  5;
 }

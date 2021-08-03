@@ -39,15 +39,30 @@ public class BreakerManager{
 	 * 最大成功次数
 	 */
 	private int maxSuccessCount;
+	/**
+	 *半恢复尝试次数
+	 */
+	private int openRetryCount ;
+	/**
+	 * 半恢复最大尝试次数，达到最大次数后，变为OPEN状态
+	 */
+	private int maxOpenRetryCount ;
 
 
 	/**
 	 *当前状态
 	 */
 	private Breaker.BreakStatus currentStatus;
-	
+
+	public synchronized void  addRetryCount(){
+		this.openRetryCount++;
+		if(this.openRetryCount>=maxOpenRetryCount){
+			this.toOpenStatus();
+			this.openRetryCount = 0;
+		}
+	}
+
 	public synchronized void  addFailCount(){
-		Breaker.BreakStatus currentStatus = getCurrentStatus();
 		this.failCount++ ;
 		if(this.failCount>=this.maxFailCount){
 			this.toOpenStatus();

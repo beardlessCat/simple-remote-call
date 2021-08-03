@@ -15,9 +15,8 @@ public class TestController {
 	private RequestClient requesClient;
 
 	@RequestMapping("hello")
-	public ResponseDto hello(){
+	public void hello(){
 		ResponseDto<User> user = requesClient.queryUser(new User().setName("小明"));
-		return user ;
 	}
 
 }
