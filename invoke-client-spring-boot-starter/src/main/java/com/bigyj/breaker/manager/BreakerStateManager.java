@@ -19,9 +19,9 @@ public class BreakerStateManager {
     private int successCount ;
 
     /**
-     * 接口熔断时间
+     * 接口熔断最长时间
      */
-    private long closeAt;
+    private long maxOpenToTryTime;
 
     /**
      * 最大失败次数
@@ -45,10 +45,10 @@ public class BreakerStateManager {
      */
     private BreakerState breakerState ;
 
-    public BreakerStateManager(int failCount, int successCount, long closeAt, int maxFailCount, int maxSuccessCount, int openRetryCount, int maxOpenRetryCount) {
+    public BreakerStateManager(int failCount, int successCount, long maxOpenToTryTime, int maxFailCount, int maxSuccessCount, int openRetryCount, int maxOpenRetryCount) {
         this.failCount = failCount;
         this.successCount = successCount;
-        this.closeAt = closeAt;
+        this.maxOpenToTryTime = maxOpenToTryTime;
         this.maxFailCount = maxFailCount;
         this.maxSuccessCount = maxSuccessCount;
         this.openRetryCount = openRetryCount;
@@ -81,7 +81,6 @@ public class BreakerStateManager {
         this.failCount = 0 ;
         this.successCount = 0;
         this.openRetryCount = 0;
-        this.closeAt = 0;
     }
 
     /**
@@ -112,8 +111,6 @@ public class BreakerStateManager {
         if(this.openRetryCount>=maxOpenRetryCount){
             this.toOpenStatus();
             this.openRetryCount = 0;
-            long closeAt = System.currentTimeMillis();
-            this.closeAt = closeAt;
         }
     }
 
@@ -123,9 +120,6 @@ public class BreakerStateManager {
         if(this.failCount>=this.maxFailCount){
             if(this.isClosed()){
                 this.toOpenStatus();
-                //记录当前开始熔断时刻
-                long closeAt = System.currentTimeMillis();
-                this.closeAt = closeAt;
             }
         }
     }
@@ -134,9 +128,16 @@ public class BreakerStateManager {
         this.successCount++ ;
         if(this.successCount>this.maxSuccessCount){
             toCloseStatus();
-            this.closeAt = 0;
             this.successCount=0;
             this.failCount=0;
         }
     }
+    public void increaseSuccessCount(){
+        this.successCount++ ;
+    };
+
+    public void increaseFailureCount(){
+        this.failCount++ ;
+    };
+
 }

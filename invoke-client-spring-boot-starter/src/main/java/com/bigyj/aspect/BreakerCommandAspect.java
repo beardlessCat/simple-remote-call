@@ -3,6 +3,7 @@ package com.bigyj.aspect;
 import com.bigyj.annotation.BreakerCommand;
 import com.bigyj.breaker.holder.BreakerManagerHolder;
 import com.bigyj.breaker.manager.BreakerStateManager;
+import com.bigyj.breaker.state.BreakerState;
 import com.bigyj.exception.MethodNotAvailableException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -62,13 +63,22 @@ public class BreakerCommandAspect {
 			maxOpenRetryCount = breakerCommand.maxSuccessCount();
 		}
 		BreakerStateManager breakerStateManager = breakerManagerHolder.get(methodName);
-
-		if(breakerStateManager == null){
-			breakerStateManager = new BreakerStateManager(0,0,0,maxFailCount,maxSuccessCount, 0,maxOpenRetryCount);
+		BreakerState breakerState = breakerStateManager.getBreakerState();
+		//判断当前接口是否能够调用（断路器是否开启）【区分open、half-open】
+		breakerState.methodIsAboutToBeCalled();
+		try {
+			result = point.proceed(args);
+			//正常执行
+		}catch (Exception e){
+			//发生异常
+			breakerState.actException();
+		}
+		breakerState.actSuccess();
+		/*if(breakerStateManager == null){
+			breakerStateManager = new BreakerStateManager(0,0,maxOpenToTryTime,maxFailCount,maxSuccessCount, 0,maxOpenRetryCount);
 			result = openCall(point,args,methodName,breakerStateManager);
 		}else {
 			logger.error("当前接口熔断器状态{}",breakerStateManager.toString());
-			long closeAt = breakerStateManager.getCloseAt();
 			if(breakerStateManager.isClosed()){
 				//断路器CLOSE状态，直接进行接口调用
 				result = openCall(point,args,methodName,breakerStateManager);
@@ -86,18 +96,10 @@ public class BreakerCommandAspect {
 					throw new MethodNotAvailableException(MESSAGE);
 				}
 			}else {
-				//熔断,增加失败次数(加锁处理)
-				long now = System.currentTimeMillis();
-				if(now - closeAt >= maxOpenToTryTime){
-					logger.error("接口熔断时间到达最大值，接口变为半熔断状态！");
-					breakerStateManager.toHalfOpenStatus();
-					result = openCall(point,args,methodName,breakerStateManager);
-				}else {
-					logger.error("接口已经熔断，不再进行接口调用");
-					throw new MethodNotAvailableException(MESSAGE);
-				}
+				logger.error("接口已经熔断，不再进行接口调用");
+				throw new MethodNotAvailableException(MESSAGE);
 			}
-		}
+		}*/
 		return result ;
 	}
 
