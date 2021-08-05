@@ -59,6 +59,8 @@ public interface RequesClient {
 
 （3）接口状态流程图
 ![Alt text](https://img-blog.csdnimg.cn/53c0b4c337464627b57403ea9f696753.png)
+
+（4）熔断器测试日志
 ```
 com.bigyj.common.exception.ApiException: 接口调用失败！
 : 当前接口熔断器状态BreakerManager(failCount=1, successCount=0, closeAt=0, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=CLOSE)
@@ -176,9 +178,8 @@ com.bigyj.exception.MethodNotAvailableException: method in not available!
 : 当前接口熔断器状态BreakerManager(failCount=0, successCount=0, closeAt=0, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=CLOSE)
 : 当前接口熔断器状态BreakerManager(failCount=0, successCount=0, closeAt=0, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=CLOSE)
 : 当前接口熔断器状态BreakerManager(failCount=0, successCount=0, closeAt=0, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=CLOSE)
-
 ```
-（4）测试日志
+
 ### 3. 远程调用client自动注入
 通过ImportBeanDefinitionRegistrar进行依赖注入
 ```java
