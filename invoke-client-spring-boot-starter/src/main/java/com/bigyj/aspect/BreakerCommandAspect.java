@@ -76,7 +76,7 @@ public class BreakerCommandAspect {
 				result = openCall(point,args,methodName,breakerManager);
 			}else if(currentStatus== Breaker.BreakStatus.HALFOPEN){
 				SecureRandom secureRandom = new SecureRandom();
-				//半熔点时，部分接口进行放行
+				//半熔点时，部分接口进行放行(限流)
 				int x = secureRandom.nextInt(10);
 				if(x>5){
 					//半恢复，随机尝试一次，
@@ -91,10 +91,12 @@ public class BreakerCommandAspect {
 				//熔断,增加失败次数(加锁处理)
 				long now = System.currentTimeMillis();
 				if(now - closeAt >= maxOpenToTryTime){
-					logger.error("接口熔断时间到达最大值，开始尝试调用接口");
+					logger.error("接口熔断时间到达最大值，接口变为半熔断状态！");
+					breakerManager.toHalfOpenStatus();
 					result = openCall(point,args,methodName,breakerManager);
 				}else {
 					logger.error("接口已经熔断，不再进行接口调用");
+					throw new MethodNotAvailableException(MESSAGE);
 				}
 			}
 		}
@@ -105,10 +107,7 @@ public class BreakerCommandAspect {
 		Object result = null;
 		try {
 			result = point.proceed(args);
-			if(breakerManager.getCurrentStatus() != Breaker.BreakStatus.CLOSE){
-				if(breakerManager.getCurrentStatus() == Breaker.BreakStatus.OPEN){
-					breakerManager.toHalfOpenStatus();
-				}
+			if(breakerManager.getCurrentStatus() == Breaker.BreakStatus.HALFOPEN){
 				breakerManager.addSuccessCount();
 			}
 		}catch (Throwable throwable){

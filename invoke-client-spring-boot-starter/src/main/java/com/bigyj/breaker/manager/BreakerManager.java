@@ -59,16 +59,21 @@ public class BreakerManager{
 		if(this.openRetryCount>=maxOpenRetryCount){
 			this.toOpenStatus();
 			this.openRetryCount = 0;
+			long closeAt = System.currentTimeMillis();
+			this.closeAt = closeAt;
 		}
 	}
 
 	public synchronized void  addFailCount(){
 		this.failCount++ ;
+		//fixme 有点臃肿，尝试寻找更加简洁的方式（当前状态为close时才打开）
 		if(this.failCount>=this.maxFailCount){
-			this.toOpenStatus();
-			//记录当前开始熔断时刻
-			long closeAt = System.currentTimeMillis();
-			this.closeAt = closeAt;
+			if(this.currentStatus==Breaker.BreakStatus.CLOSE){
+				this.toOpenStatus();
+				//记录当前开始熔断时刻
+				long closeAt = System.currentTimeMillis();
+				this.closeAt = closeAt;
+			}
 		}
 	}
 	
@@ -87,7 +92,7 @@ public class BreakerManager{
 	
 	public void toOpenStatus(){
 		this.currentStatus = Breaker.BreakStatus.OPEN;
-		System.out.println("【接口熔断】");
+		System.out.println("【断路器变为OPEN】");
 	}
 
 	/**
@@ -96,7 +101,7 @@ public class BreakerManager{
 	
 	public void toCloseStatus(){
 		this.currentStatus = Breaker.BreakStatus.CLOSE;
-		System.out.println("【接口回复】");
+		System.out.println("【断路器变为CLOSE】");
 	}
 
 	/**
@@ -104,6 +109,7 @@ public class BreakerManager{
 	 */
 	public void toHalfOpenStatus(){
 		this.currentStatus = Breaker.BreakStatus.HALFOPEN;
-		System.out.println("【接口半恢复恢复】");
+		//半恢复清空
+		System.out.println("【断路器变为HALF-OPEN】");
 	}
 }
