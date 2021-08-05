@@ -49,12 +49,14 @@ public interface RequesClient {
 - CLOSE：熔断器处于关闭状态，接口可正常调用;
 - HAlf-OPEN：熔断器处于半关闭状态，此时回对部门请求进行尝试调用，根据调用结果改变状态。
 - OPEN：熔断器处于开启状态，此时所有请求均不再调用接口，而是直接返回接口熔断信息。
+
 （2）接口状态变更转换图
 ![Alt text](https://img-blog.csdnimg.cn/b42c6fc8fc14489fb3b34d9828375a17.png)
 - CLOSE转换为OPEN：接口调用失败次数达到阈值
 - OPEN转换为HALF_OPEN：接口熔断时间达到阈值
 - HALF_OPEN转换为CLOSE：接口成功次数达到阈值
 - HALF_OPEN转换为OPEN：接口失败次数达到阈值
+
 （3）接口状态流程图
 ![Alt text](https://img-blog.csdnimg.cn/53c0b4c337464627b57403ea9f696753.png)
 ### 3. 远程调用client自动注入
