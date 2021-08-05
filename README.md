@@ -27,7 +27,7 @@ public interface RequesClient {
 - 远程调用自定义扩展
 - accessToken获取自定义扩展
 - 重试机制【已完成】
-- 熔断机制
+- 熔断机制【已完成】
 - 自定义配置类及客户段配置类之间的隔离【已完成】
 - 自定义请求拦截器【已完成】
 ## 三.版本规划
@@ -42,8 +42,22 @@ public interface RequesClient {
 代理逻辑的处理了。
 ### 1. openFeign原理 
 ![Alt text](https://img-blog.csdnimg.cn/189008c337f2470d954573e103fa0ce8.png)
-
-### 2. 远程调用client自动注入
+### 2.接口熔断机制
+通过接口熔断管理器管理接口状态，对接口进行熔断保护
+（1）接口状态说明
+接口基于断路器状态分为三种：OPEN,HAlf-OPEN,CLOSE
+- CLOSE：熔断器处于关闭状态，接口可正常调用;
+- HAlf-OPEN：熔断器处于半关闭状态，此时回对部门请求进行尝试调用，根据调用结果改变状态。
+- OPEN：熔断器处于开启状态，此时所有请求均不再调用接口，而是直接返回接口熔断信息。
+（2）接口状态变更转换图
+![Alt text](https://img-blog.csdnimg.cn/b42c6fc8fc14489fb3b34d9828375a17.png)
+- CLOSE转换为OPEN：接口调用失败次数达到阈值
+- OPEN转换为HALF_OPEN：接口熔断时间达到阈值
+- HALF_OPEN转换为CLOSE：接口成功次数达到阈值
+- HALF_OPEN转换为OPEN：接口失败次数达到阈值
+（3）接口状态流程图
+![Alt text](https://img-blog.csdnimg.cn/53c0b4c337464627b57403ea9f696753.png)
+### 3. 远程调用client自动注入
 通过ImportBeanDefinitionRegistrar进行依赖注入
 ```java
 public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar, ResourceLoaderAware, EnvironmentAware {
@@ -69,7 +83,7 @@ public class ClientBeanDefinitionRegistrar implements ImportBeanDefinitionRegist
 	}
 }
 ```
-### 3. 动态代理生成客户端实现类
+### 4. 动态代理生成客户端实现类
 通过自定义FactoryBean，在getObject方法中使用代理模式，动态生成相关类
 ```java
 public class InvokeClientFactoryBean implements FactoryBean<Object>, ApplicationContextAware {
