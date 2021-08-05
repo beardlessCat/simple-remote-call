@@ -1,13 +1,13 @@
 package com.bigyj.breaker.holder;
 
-import com.bigyj.breaker.manager.BreakerManager;
+import com.bigyj.breaker.manager.BreakerStateManager;
 
 public interface BreakerManagerHolder {
 
-	BreakerManager get(String targetName);
+	BreakerStateManager get(String targetName);
 
-	void manage(String targetName , BreakerManager breakerManager) ;
+	void manage(String targetName , BreakerStateManager breakerManager) ;
 
-	BreakerManager create();
+	BreakerStateManager create();
 
 }

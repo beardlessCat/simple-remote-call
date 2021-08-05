@@ -2,9 +2,8 @@ package com.bigyj.breaker.state;
 
 import com.bigyj.breaker.manager.BreakerStateManager;
 
-public class HalfOpenState extends BreakerState{
-
-	public HalfOpenState(BreakerStateManager breakerStateManager) {
+public class ClosedState extends BreakerState{
+	public ClosedState(BreakerStateManager breakerStateManager) {
 		super(breakerStateManager);
 	}
 }

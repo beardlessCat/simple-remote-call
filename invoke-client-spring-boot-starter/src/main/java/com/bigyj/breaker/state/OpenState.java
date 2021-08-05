@@ -1,10 +1,10 @@
 package com.bigyj.breaker.state;
 
-import com.bigyj.breaker.manager.BreakerManager;
+import com.bigyj.breaker.manager.BreakerStateManager;
 
 public class OpenState extends BreakerState {
-	@Override
-	public void handle(BreakerManager breakerManager) {
-		
+	public OpenState(BreakerStateManager breakerStateManager) {
+		super(breakerStateManager);
+		breakerStateManager.clear();
 	}
 }
