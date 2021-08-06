@@ -2,6 +2,7 @@ package com.bigyj.utils;
 
 import java.util.Arrays;
 
+import com.bigyj.breaker.manager.RedisBreakerManagerObject;
 import com.bigyj.breaker.manager.BreakerStateManager;
 import io.protostuff.LinkedBuffer;
 import io.protostuff.ProtostuffIOUtil;
@@ -54,11 +55,11 @@ public class ProtoStuffUtil {
 
 	public static void main(String[] args) {
 		BreakerStateManager breakerStateManager = new BreakerStateManager(0,0,0,0,0, 0,0);
-
+		RedisBreakerManagerObject redisBreakerManagerObject = new RedisBreakerManagerObject(breakerStateManager);
 		//使用ProtostuffUtils序列化
-		byte[] data = ProtoStuffUtil.serialize(breakerStateManager);
+		byte[] data = ProtoStuffUtil.serialize(redisBreakerManagerObject);
 		System.out.println("序列化后：" + Arrays.toString(data));
-		BreakerStateManager result = ProtoStuffUtil.deserialize(data, BreakerStateManager.class);
+		RedisBreakerManagerObject result = ProtoStuffUtil.deserialize(data, RedisBreakerManagerObject.class);
 		System.out.println("反序列化后：" + result.toString());
 	}
 }

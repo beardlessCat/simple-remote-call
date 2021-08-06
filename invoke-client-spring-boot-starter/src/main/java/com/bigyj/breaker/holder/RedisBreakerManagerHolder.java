@@ -1,6 +1,7 @@
 package com.bigyj.breaker.holder;
 
 import com.bigyj.breaker.manager.BreakerStateManager;
+import com.bigyj.breaker.manager.RedisBreakerManagerObject;
 import com.bigyj.utils.ProtoStuffUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,17 +14,20 @@ public class RedisBreakerManagerHolder implements BreakerManagerHolder{
 	@Override
 	public BreakerStateManager get(String targetName) {
 		byte[] bytes  = (byte[]) redisTemplate.opsForValue().get(targetName);
-		BreakerStateManager breakerStateManager = ProtoStuffUtil.deserialize(bytes, BreakerStateManager.class);
-		return breakerStateManager;
+		RedisBreakerManagerObject redisBreakerManagerObject = ProtoStuffUtil.deserialize(bytes, RedisBreakerManagerObject.class);
+		BreakerStateManager breakerStateManager = redisBreakerManagerObject.toManager();
+ 		return breakerStateManager;
 	}
 
 	@Override
 	public void manage(String targetName, BreakerStateManager breakerManager) {
-		redisTemplate.opsForValue().set(targetName, ProtoStuffUtil.serialize(breakerManager));
+		RedisBreakerManagerObject redisBreakerManagerObject = new RedisBreakerManagerObject(breakerManager);
+		redisTemplate.opsForValue().set(targetName, ProtoStuffUtil.serialize(redisBreakerManagerObject));
 	}
 
 	@Override
 	public BreakerStateManager create() {
 		return null;
 	}
+
 }

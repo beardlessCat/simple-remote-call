@@ -61,7 +61,11 @@ public class BreakerCommandAspect {
 		if(maxOpenRetryCount<0){
 			maxOpenRetryCount = breakerCommand.maxSuccessCount();
 		}
-		BreakerStateManager breakerStateManager = breakerManagerHolder.get(methodName);
+		// breakerStateManager = breakerManagerHolder.get(methodName);
+		BreakerStateManager breakerStateManager = new BreakerStateManager(0,0,0,maxFailCount,maxSuccessCount, 0,maxOpenRetryCount);
+		breakerManagerHolder.manage(methodName,breakerStateManager);
+		BreakerStateManager breakerStateManager1 = breakerManagerHolder.get(methodName);
+		System.out.println(breakerStateManager1.toString());
 
 		if(breakerStateManager == null){
 			breakerStateManager = new BreakerStateManager(0,0,0,maxFailCount,maxSuccessCount, 0,maxOpenRetryCount);
