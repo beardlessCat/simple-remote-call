@@ -5,5 +5,7 @@ dependencies {
 	compileOnly libraries.fastjson
 	compileOnly libraries.redisson
 	implementation libraries.springBootStarterAop
+	implementation libraries.protostuffCore
+	implementation libraries.protostuffRuntime
 	implementation project(':common')
 }
