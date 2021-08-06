@@ -4,7 +4,6 @@ import com.bigyj.annotation.BreakerCommand;
 import com.bigyj.breaker.holder.BreakerManagerHolder;
 import com.bigyj.breaker.manager.BreakerStateManager;
 import com.bigyj.breaker.state.BreakerState;
-import com.bigyj.exception.MethodNotAvailableException;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
-import java.security.SecureRandom;
 
 @Component
 @Aspect
@@ -100,6 +98,10 @@ public class BreakerCommandAspect {
 				throw new MethodNotAvailableException(MESSAGE);
 			}
 		}*/
+		/**
+		 * 及时同步数据
+		 */
+		breakerManagerHolder.manage(methodName,breakerStateManager);
 		return result ;
 	}
 
