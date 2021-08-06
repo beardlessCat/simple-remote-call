@@ -61,12 +61,7 @@ public class BreakerCommandAspect {
 		if(maxOpenRetryCount<0){
 			maxOpenRetryCount = breakerCommand.maxSuccessCount();
 		}
-		// breakerStateManager = breakerManagerHolder.get(methodName);
-		BreakerStateManager breakerStateManager = new BreakerStateManager(0,0,0,maxFailCount,maxSuccessCount, 0,maxOpenRetryCount);
-		breakerManagerHolder.manage(methodName,breakerStateManager);
-		BreakerStateManager breakerStateManager1 = breakerManagerHolder.get(methodName);
-		System.out.println(breakerStateManager1.toString());
-
+		BreakerStateManager breakerStateManager = breakerManagerHolder.get(methodName);
 		if(breakerStateManager == null){
 			breakerStateManager = new BreakerStateManager(0,0,0,maxFailCount,maxSuccessCount, 0,maxOpenRetryCount);
 			result = openCall(point,args,methodName,breakerStateManager);
@@ -102,6 +97,10 @@ public class BreakerCommandAspect {
 				}
 			}
 		}
+		/**
+		 * 及时同步数据
+		 */
+		breakerManagerHolder.manage(methodName,breakerStateManager);
 		return result ;
 	}
 

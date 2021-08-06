@@ -3,11 +3,11 @@ package com.bigyj.breaker.holder;
 import com.bigyj.breaker.manager.BreakerStateManager;
 import com.bigyj.breaker.manager.RedisBreakerManagerObject;
 import com.bigyj.utils.ProtoStuffUtil;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
 public class RedisBreakerManagerHolder implements BreakerManagerHolder{
+
 	@Autowired
 	private RedisTemplate redisTemplate ;
 
@@ -23,11 +23,6 @@ public class RedisBreakerManagerHolder implements BreakerManagerHolder{
 	public void manage(String targetName, BreakerStateManager breakerManager) {
 		RedisBreakerManagerObject redisBreakerManagerObject = new RedisBreakerManagerObject(breakerManager);
 		redisTemplate.opsForValue().set(targetName, ProtoStuffUtil.serialize(redisBreakerManagerObject));
-	}
-
-	@Override
-	public BreakerStateManager create() {
-		return null;
 	}
 
 }
