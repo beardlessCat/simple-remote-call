@@ -9,39 +9,39 @@ import lombok.Data;
 @Data
 public class BreakerStateManager {
     /**
-     * Ê§°Ü´ÎÊý
+     * å¤±è´¥æ¬¡æ•°
      */
     private int failCount ;
 
     /**
-     * ³É¹¦´ÎÊý
+     * æˆåŠŸæ¬¡æ•°
      */
     private int successCount ;
 
     /**
-     * ½Ó¿ÚÈÛ¶Ï×î³¤Ê±¼ä
+     * æŽ¥å£ç†”æ–­æœ€é•¿æ—¶é—´
      */
     private long maxOpenToTryTime;
 
     /**
-     * ×î´óÊ§°Ü´ÎÊý
+     * æœ€å¤§å¤±è´¥æ¬¡æ•°
      */
     private int maxFailCount ;
 
     /**
-     * ×î´ó³É¹¦´ÎÊý
+     * æœ€å¤§æˆåŠŸæ¬¡æ•°
      */
     private int maxSuccessCount;
     /**
-     *°ë»Ö¸´³¢ÊÔ´ÎÊý
+     *åŠæ¢å¤å°è¯•æ¬¡æ•°
      */
     private int openRetryCount ;
     /**
-     * °ë»Ö¸´×î´ó³¢ÊÔ´ÎÊý£¬´ïµ½×î´ó´ÎÊýºó£¬±äÎªOPEN×´Ì¬
+     * åŠæ¢å¤æœ€å¤§å°è¯•æ¬¡æ•°ï¼Œè¾¾åˆ°æœ€å¤§æ¬¡æ•°åŽï¼Œå˜ä¸ºOPENçŠ¶æ€
      */
     private int maxOpenRetryCount ;
     /**
-     * µ±Ç°×´Ì¬
+     * å½“å‰çŠ¶æ€
      */
     private BreakerState breakerState ;
 
@@ -57,24 +57,24 @@ public class BreakerStateManager {
 
     public void toOpenStatus(){
         this.breakerState = new OpenState(this);
-        System.out.println("¡¾¶ÏÂ·Æ÷±äÎªOPEN¡¿");
+        System.out.println("ã€æ–­è·¯å™¨å˜ä¸ºOPENã€‘");
     }
 
     /**
-     * ±äÎªCLOSE×´Ì¬
+     * å˜ä¸ºCLOSEçŠ¶æ€
      */
 
     public void toCloseStatus(){
         this.breakerState = new ClosedState(this);
-        System.out.println("¡¾¶ÏÂ·Æ÷±äÎªCLOSE¡¿");
+        System.out.println("ã€æ–­è·¯å™¨å˜ä¸ºCLOSEã€‘");
     }
 
     /**
-     * ±äÎªHALFOPEN×´Ì¬
+     * å˜ä¸ºHALFOPENçŠ¶æ€
      */
     public void toHalfOpenStatus(){
         this.breakerState = new HalfOpenState(this);
-        System.out.println("¡¾¶ÏÂ·Æ÷±äÎªHALF-OPEN¡¿");
+        System.out.println("ã€æ–­è·¯å™¨å˜ä¸ºHALF-OPENã€‘");
     }
 
     public void clear() {
@@ -84,7 +84,7 @@ public class BreakerStateManager {
     }
 
     /**
-     * ÊÇ·ñ¹Ø±Õ
+     * æ˜¯å¦å…³é—­
      * @return
      */
     public boolean isClosed() {
@@ -92,7 +92,7 @@ public class BreakerStateManager {
     }
 
     /**
-     * ÊÇ·ñ¿ªÆô
+     * æ˜¯å¦å¼€å¯
      * @return
      */
     public boolean isOpen() {
@@ -100,7 +100,7 @@ public class BreakerStateManager {
     }
 
     /**
-     * ÊÇ·ñ°ë¿ªÆô
+     * æ˜¯å¦åŠå¼€å¯
      * @return
      */
     public boolean isHalfOpen() {
@@ -116,7 +116,7 @@ public class BreakerStateManager {
 
     public synchronized void  addFailCount(){
         this.failCount++ ;
-        //fixme ÓÐµãÓ·Ö×£¬³¢ÊÔÑ°ÕÒ¸ü¼Ó¼ò½àµÄ·½Ê½£¨µ±Ç°×´Ì¬ÎªcloseÊ±²Å´ò¿ª£©
+        //fixme æœ‰ç‚¹è‡ƒè‚¿ï¼Œå°è¯•å¯»æ‰¾æ›´åŠ ç®€æ´çš„æ–¹å¼ï¼ˆå½“å‰çŠ¶æ€ä¸ºcloseæ—¶æ‰æ‰“å¼€ï¼‰
         if(this.failCount>=this.maxFailCount){
             if(this.isClosed()){
                 this.toOpenStatus();

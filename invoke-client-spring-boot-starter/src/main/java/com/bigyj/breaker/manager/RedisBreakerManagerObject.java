@@ -57,7 +57,6 @@ public class RedisBreakerManagerObject implements Serializable {
 	public RedisBreakerManagerObject(BreakerStateManager breakerStateManager) {
 		this.failCount = breakerStateManager.getFailCount();
 		this.successCount = breakerStateManager.getSuccessCount();
-		this.closeAt = breakerStateManager.getCloseAt();
 		this.maxFailCount = breakerStateManager.getMaxFailCount();
 		this.maxSuccessCount = breakerStateManager.getMaxSuccessCount();
 		this.openRetryCount = breakerStateManager.getOpenRetryCount();
