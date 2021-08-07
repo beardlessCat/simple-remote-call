@@ -5,7 +5,7 @@ import java.io.Serializable;
 import com.bigyj.breaker.manager.BreakerStateManager;
 
 public abstract class BreakerState implements Serializable {
-	private BreakerStateManager breakerStateManager ;
+	public BreakerStateManager breakerStateManager ;
 	public BreakerState(BreakerStateManager breakerStateManager) {
 		this.breakerStateManager = breakerStateManager;
 	}
@@ -33,8 +33,6 @@ public abstract class BreakerState implements Serializable {
 	public void actException() {
 		//增加失败次数计数器，并且保存错误信息
 		breakerStateManager.increaseFailureCount();
-		//重置连续成功次数
-		//breakerStateManager.resetConsecutiveSuccessCount();
 	}
 
 }

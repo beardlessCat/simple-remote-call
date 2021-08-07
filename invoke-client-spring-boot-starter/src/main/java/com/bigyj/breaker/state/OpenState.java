@@ -20,11 +20,9 @@ public class OpenState extends BreakerState {
 	}
 
 	/**
-	 * 变为半恢复状态
+	 * 定时器变为半恢复状态
 	 */
 	private void timeToTry() {
 		breakerStateManager.toHalfOpenStatus();
 	}
-
-
 }

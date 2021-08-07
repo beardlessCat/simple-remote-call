@@ -57,6 +57,8 @@ public class BreakerStateManager {
 
     public void toOpenStatus(){
         this.breakerState = new OpenState(this);
+        this.successCount = 0;
+        this.openRetryCount = 0;
         System.out.println("【断路器变为OPEN】");
     }
 
@@ -66,6 +68,7 @@ public class BreakerStateManager {
 
     public void toCloseStatus(){
         this.breakerState = new ClosedState(this);
+        this.clear();
         System.out.println("【断路器变为CLOSE】");
     }
 
@@ -106,7 +109,11 @@ public class BreakerStateManager {
     public boolean isHalfOpen() {
         return breakerState instanceof HalfOpenState;
     }
-    public synchronized void  addRetryCount(){
+
+    /**
+     * 增加重试次数
+     */
+    private void addRetryCount(){
         this.openRetryCount++;
         if(this.openRetryCount>=maxOpenRetryCount){
             this.toOpenStatus();
@@ -114,30 +121,66 @@ public class BreakerStateManager {
         }
     }
 
-    public synchronized void  addFailCount(){
+    private void  addFailCount(){
         this.failCount++ ;
-        //fixme 有点臃肿，尝试寻找更加简洁的方式（当前状态为close时才打开）
-        if(this.failCount>=this.maxFailCount){
-            if(this.isClosed()){
-                this.toOpenStatus();
-            }
-        }
     }
 
-    public synchronized void addSuccessCount(){
+    /**
+     * 增加连续成功次数
+     */
+    private void addSuccessCount(){
         this.successCount++ ;
-        if(this.successCount>this.maxSuccessCount){
-            toCloseStatus();
-            this.successCount=0;
-            this.failCount=0;
-        }
     }
-    public void increaseSuccessCount(){
-        this.successCount++ ;
+
+    /**
+     * 增加成功次数（外部调用）
+     */
+    public synchronized void increaseSuccessCount(){
+        this.addSuccessCount(); ;
     };
 
-    public void increaseFailureCount(){
-        this.failCount++ ;
+    /**
+     * 增加时报次数（外部调用）
+     */
+    public synchronized void increaseFailureCount(){
+        this.addFailCount();
     };
 
+    /**
+     * 增加重试次数（外部调用）
+     */
+    public synchronized void increaseRetryCount(){
+        this.addRetryCount();
+    };
+
+    /**
+     * 重置成功次数
+     */
+    public void resetSuccessCount() {
+        this.successCount = 0 ;
+    }
+
+    /**
+     * 是否达到连续成功次数
+     * @return
+     */
+    public boolean successCountReached() {
+        return this.successCount>=this.getMaxSuccessCount();
+    }
+
+    /**
+     * 是否达到最大失败重试次数
+     * @return
+     */
+    public boolean failRetryCountReached() {
+        return this.openRetryCount>=this.maxOpenRetryCount;
+    }
+
+    /**
+     * 是否达到最大失败测试
+     * @return
+     */
+    public boolean failCountReached() {
+        return this.failCount>=this.maxFailCount;
+    }
 }

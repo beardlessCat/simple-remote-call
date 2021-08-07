@@ -16,7 +16,7 @@ public @interface BreakerCommand {
 	int maxFailCount() default 3;
 
 	/**
-	 * 半恢复后接口重试最大成功次数
+	 * 半恢复后接口重试最大连续成功次数
 	 */
 	int maxSuccessCount() default 5;
 

@@ -11,15 +11,10 @@ public class ClosedState extends BreakerState{
 		breakerStateManager.clear();
 	}
 	@Override
-	public void methodIsAboutToBeCalled() {
-		SecureRandom secureRandom = new SecureRandom();
-		int x = secureRandom.nextInt(10);
-		if(x>=5){
-			logger.error("接口半恢复，被拦截，直接返回异常！");
-			throw new RuntimeException("服务已熔断，请稍等重试[限流拦截]！");
-		}else {
-			logger.error("接口半恢复，限流放行，进行接口尝试！");
-			super.actException();
+	public void actException() {
+		breakerStateManager.increaseFailureCount();
+		if(breakerStateManager.failCountReached()){
+			breakerStateManager.toOpenStatus();
 		}
 	}
 }
