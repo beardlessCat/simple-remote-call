@@ -62,122 +62,114 @@ public interface RequesClient {
 
 （4）熔断器测试日志
 ```
-com.bigyj.common.exception.ApiException: 接口调用失败！
-: 当前接口熔断器状态BreakerManager(failCount=1, successCount=0, closeAt=0, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=CLOSE)
-com.bigyj.common.exception.ApiException: 接口调用失败！
-: 当前接口熔断器状态BreakerManager(failCount=2, successCount=0, closeAt=0, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=CLOSE)
-com.bigyj.common.exception.ApiException: 接口调用失败！
-==================================================================================================
-【断路器变为OPEN】
-: 当前接口熔断器状态BreakerManager(failCount=3, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=OPEN)
-: 接口已经熔断，不再进行接口调用
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=3, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=OPEN)
-: 接口已经熔断，不再进行接口调用
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=3, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=OPEN)
-: 接口熔断时间到达最大值，接口变为半熔断状态！
-==================================================================================================
-【断路器变为HALF-OPEN】
-com.bigyj.common.exception.ApiException: 接口调用失败！
-: 当前接口熔断器状态BreakerManager(failCount=4, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=1, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，进行接口调用尝试！
-com.bigyj.common.exception.ApiException: 接口调用失败！
-: 当前接口熔断器状态BreakerManager(failCount=5, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=5, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=5, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-2021-08-05 15:42:48.219 ERROR 9172 --- [nio-8090-exec-4] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed; nested exception is com.bigyj.exception.MethodNotAvailableException: method in not available!] with root cause
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=5, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=5, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=5, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=5, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=5, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，进行接口调用尝试！
-com.bigyj.common.exception.ApiException: 接口调用失败！
-: 当前接口熔断器状态BreakerManager(failCount=6, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=3, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，进行接口调用尝试！
-com.bigyj.common.exception.ApiException: 接口调用失败！
-: 当前接口熔断器状态BreakerManager(failCount=7, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=4, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，进行接口调用尝试！
-==================================================================================================
-【达到接口最大尝试次数】
-【断路器变为OPEN】
-com.bigyj.common.exception.ApiException: 接口调用失败！
-: 当前接口熔断器状态BreakerManager(failCount=8, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=OPEN)
-: 当前接口熔断器状态BreakerManager(failCount=9, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=10, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=11, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=0, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-==================================================================================================
-: 接口熔断时间到达最大值，接口变为半熔断状态！
-【断路器变为HALF-OPEN】
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=1, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=1, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=1, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=1, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，进行接口调用尝试！
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=2, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=2, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，进行接口调用尝试！
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=3, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=3, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，进行接口调用尝试！
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=4, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=4, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=4, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=4, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，进行接口调用尝试！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=5, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，不进行接口调用！
-com.bigyj.exception.MethodNotAvailableException: method in not available!
-: 当前接口熔断器状态BreakerManager(failCount=12, successCount=5, closeAt=1628149320100, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=HALFOPEN)
-: 接口半恢复，进行接口调用尝试！
-==================================================================================================
-【达到最大成功次数】
-【断路器变为CLOSE】
-: 当前接口熔断器状态BreakerManager(failCount=0, successCount=0, closeAt=0, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=CLOSE)
-: 当前接口熔断器状态BreakerManager(failCount=0, successCount=0, closeAt=0, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=CLOSE)
-: 当前接口熔断器状态BreakerManager(failCount=0, successCount=0, closeAt=0, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=CLOSE)
-: 当前接口熔断器状态BreakerManager(failCount=0, successCount=0, closeAt=0, maxFailCount=3, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, currentStatus=CLOSE)
+: 【断路器变为CLOSE】
+: BreakerStateManager(failCount=0, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@43b23436)
+: 接口调用失败！
+: BreakerStateManager(failCount=1, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@43b23436)
+: 接口调用失败！
+: BreakerStateManager(failCount=2, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@43b23436)
+: 接口调用失败！
+: BreakerStateManager(failCount=3, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@43b23436)
+: 接口调用失败！
+: BreakerStateManager(failCount=4, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@43b23436)
+: 接口调用失败！
+===============================================================================================
+: 【断路器变为OPEN】
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@189436cd)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@189436cd)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@189436cd)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@189436cd)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@189436cd)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: 【断路器变为HALF-OPEN】
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@4cef79fb)
+: 接口调用失败！
+: BreakerStateManager(failCount=6, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=1, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@4cef79fb)
+: 接口调用失败！
+: BreakerStateManager(failCount=7, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=2, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@4cef79fb)
+: 接口调用失败！
+: BreakerStateManager(failCount=8, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=3, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@4cef79fb)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=8, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=3, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@4cef79fb)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=8, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=3, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@4cef79fb)
+: 接口调用失败！
+: BreakerStateManager(failCount=9, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=4, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@4cef79fb)
+: 接口调用失败！
+: 【断路器变为OPEN】
+: BreakerStateManager(failCount=10, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@485fb0e8)
+: 【断路器变为HALF-OPEN】
+: BreakerStateManager(failCount=10, successCount=1, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@6bb3d520)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=10, successCount=1, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@6bb3d520)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=10, successCount=1, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@6bb3d520)
+: BreakerStateManager(failCount=10, successCount=2, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@6bb3d520)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=10, successCount=2, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@6bb3d520)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=10, successCount=2, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@6bb3d520)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=10, successCount=2, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@6bb3d520)
+: BreakerStateManager(failCount=10, successCount=3, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@6bb3d520)
+: BreakerStateManager(failCount=10, successCount=4, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@6bb3d520)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=10, successCount=4, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@6bb3d520)
+===============================================================================================
+: 【断路器变为CLOSE】
+: BreakerStateManager(failCount=0, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@44348bd0)
+: BreakerStateManager(failCount=0, successCount=1, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@44348bd0)
+: BreakerStateManager(failCount=0, successCount=2, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@44348bd0)
+: BreakerStateManager(failCount=0, successCount=3, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@44348bd0)
+: BreakerStateManager(failCount=0, successCount=4, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@44348bd0)
+: 接口调用失败！
+: BreakerStateManager(failCount=1, successCount=4, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@44348bd0)
+: 接口调用失败！
+: BreakerStateManager(failCount=2, successCount=4, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@44348bd0)
+: 接口调用失败！
+: BreakerStateManager(failCount=3, successCount=4, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@44348bd0)
+: 接口调用失败！
+: BreakerStateManager(failCount=4, successCount=4, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@44348bd0)
+: 接口调用失败！
+===============================================================================================
+: 【断路器变为OPEN】
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.OpenState@2e97b6dc)
+===============================================================================================
+: 【断路器变为HALF-OPEN】
+: BreakerStateManager(failCount=5, successCount=1, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@5143c073)
+com.bigyj.exception.MethodNotAvailableException: 服务已熔断，请稍等重试！
+: BreakerStateManager(failCount=5, successCount=1, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@5143c073)
+: BreakerStateManager(failCount=5, successCount=2, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@5143c073: BreakerStateManager(failCount=5, successCount=3, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@5143c073)
+: BreakerStateManager(failCount=5, successCount=4, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.HalfOpenState@5143c073)
+===============================================================================================
+: 【断路器变为CLOSE】
+: BreakerStateManager(failCount=0, successCount=0, maxOpenToTryTime=60000, maxFailCount=5, maxSuccessCount=5, openRetryCount=0, maxOpenRetryCount=5, breakerState=com.bigyj.breaker.state.ClosedState@7236669a)
 ```
 
 ### 3. 远程调用client自动注入
