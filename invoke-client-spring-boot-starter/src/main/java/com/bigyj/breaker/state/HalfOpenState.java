@@ -1,7 +1,9 @@
 package com.bigyj.breaker.state;
 
 import java.security.SecureRandom;
+
 import com.bigyj.breaker.manager.BreakerStateManager;
+import com.bigyj.exception.MethodNotAvailableException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -12,14 +14,14 @@ public class HalfOpenState extends BreakerState{
 	}
 
 	/**
-	 * 半恢复状态需进行限流处理
+	 * 鍗婃仮澶嶇姸鎬侀渶杩涜闄愭祦澶勭悊
 	 */
 	@Override
 	public void methodIsAboutToBeCalled() {
 		SecureRandom secureRandom = new SecureRandom();
 		int x = secureRandom.nextInt(10);
 		if(x>5){
-			throw new RuntimeException("服务已熔断，请稍等重试！");
+			throw new MethodNotAvailableException("鏈嶅姟宸茬啍鏂紝璇风◢绛夐噸璇曪紒");
 		}
 	}
 

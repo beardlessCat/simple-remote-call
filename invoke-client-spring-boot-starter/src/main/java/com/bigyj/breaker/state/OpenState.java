@@ -8,7 +8,7 @@ import java.util.TimerTask;
 public class OpenState extends BreakerState {
 	public OpenState(BreakerStateManager breakerStateManager) {
 		super(breakerStateManager);
-		//fixme ¿¼ÂÇ»»ÎªÏß³Ì³Ø
+		//fixme è€ƒè™‘æ¢ä¸ºçº¿ç¨‹æ± 
 		final Timer timer = new Timer();
 		timer.schedule(new TimerTask() {
 			@Override
@@ -20,7 +20,7 @@ public class OpenState extends BreakerState {
 	}
 
 	/**
-	 * ¶¨Ê±Æ÷±äÎª°ë»Ö¸´×´Ì¬
+	 * å®šæ—¶å™¨å˜ä¸ºåŠæ¢å¤çŠ¶æ€
 	 */
 	private void timeToTry() {
 		breakerStateManager.toHalfOpenStatus();

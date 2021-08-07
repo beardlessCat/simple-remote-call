@@ -60,7 +60,6 @@ public class HttpMethodHandler implements MethodHandler{
 				);
 				return execute(params, accessToken);
 			}catch (ResourceAccessException e){
-				logger.error(methodMetadata.getValue()+"接口重试次数"+tryCount);
 				if(tryCount> methodMetadata.getMaxAttempts()){
 					throw new ApiException("00001","接口调用失败！");
 				}

@@ -61,18 +61,19 @@ public class BreakerCommandAspect {
 			maxOpenRetryCount = breakerCommand.maxOpenRetryCount();
 		}
 		BreakerStateManager breakerStateManager = breakerManagerHolder.get(methodName);
+		logger.error(breakerStateManager.toString());
 		BreakerState breakerState = breakerStateManager.getBreakerState();
 		//判断当前接口是否能够调用（断路器是否开启）
 		breakerState.methodIsAboutToBeCalled();
 		try {
 			result = point.proceed(args);
 			//正常执行
+			breakerState.actSuccess();
 		}catch (Exception e){
 			logger.error("接口调用失败！");
 			//发生异常区分
 			breakerState.actException();
 		}
-		breakerState.actSuccess();
 		return result ;
 	}
 }

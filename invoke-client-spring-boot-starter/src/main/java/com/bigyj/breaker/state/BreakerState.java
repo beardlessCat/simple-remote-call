@@ -3,7 +3,11 @@ package com.bigyj.breaker.state;
 import java.io.Serializable;
 
 import com.bigyj.breaker.manager.BreakerStateManager;
+import com.bigyj.common.exception.ApiException;
+import com.bigyj.exception.MethodNotAvailableException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class BreakerState implements Serializable {
 	public BreakerStateManager breakerStateManager ;
 	public BreakerState(BreakerStateManager breakerStateManager) {
@@ -11,27 +15,27 @@ public abstract class BreakerState implements Serializable {
 	}
 
 	/**
-	 * µ÷ÓÃ·½·¨Ö®Ç°´¦ÀíµÄ²Ù×÷
+	 * è°ƒç”¨æ–¹æ³•ä¹‹å‰å¤„ç†çš„æ“ä½œ
 	 */
 	public void methodIsAboutToBeCalled() {
-		//Èç¹ûÊÇ¶Ï¿ª×´Ì¬£¬Ö±½Ó·µ»Ø£¬È»ºóµÈ³¬Ê±×ª»»µ½°ë¶Ï¿ª×´Ì¬
+		//å¦‚æœæ˜¯æ–­å¼€çŠ¶æ€ï¼Œç›´æ¥è¿”å›ï¼Œç„¶åç­‰è¶…æ—¶è½¬æ¢åˆ°åŠæ–­å¼€çŠ¶æ€
 		if (breakerStateManager.isOpen()) {
-			throw new RuntimeException("·şÎñÒÑÈÛ¶Ï£¬ÇëÉÔµÈÖØÊÔ£¡");
+			throw new MethodNotAvailableException("æœåŠ¡å·²ç†”æ–­ï¼Œè¯·ç¨ç­‰é‡è¯•ï¼");
 		}
 	}
 
 	/**
-	 * ·½·¨µ÷ÓÃ³É¹¦Ö®ºóµÄ²Ù×÷
+	 * æ–¹æ³•è°ƒç”¨æˆåŠŸä¹‹åçš„æ“ä½œ
 	 */
 	public void actSuccess() {
 		breakerStateManager.increaseSuccessCount();
 	}
 
 	/**
-	 * ·½·¨µ÷ÓÃ·¢ÉúÒì³£²Ù×÷ºóµÄ²Ù×÷
+	 * æ–¹æ³•è°ƒç”¨å‘ç”Ÿå¼‚å¸¸æ“ä½œåçš„æ“ä½œ
 	 */
 	public void actException() {
-		//Ôö¼ÓÊ§°Ü´ÎÊı¼ÆÊıÆ÷£¬²¢ÇÒ±£´æ´íÎóĞÅÏ¢
+		//å¢åŠ å¤±è´¥æ¬¡æ•°è®¡æ•°å™¨ï¼Œå¹¶ä¸”ä¿å­˜é”™è¯¯ä¿¡æ¯
 		breakerStateManager.increaseFailureCount();
 	}
 
