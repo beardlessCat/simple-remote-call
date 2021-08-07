@@ -44,7 +44,10 @@ public class RedisBreakerManagerObject implements Serializable {
 	 * 半恢复最大尝试次数，达到最大次数后，变为OPEN状态
 	 */
 	private int maxOpenRetryCount ;
-
+	/**
+	 * 接口熔断最长时间
+	 */
+	private int maxOpenToTryTime;
 	/**
 	 * 当前状态
 	 */
@@ -73,7 +76,8 @@ public class RedisBreakerManagerObject implements Serializable {
 	}
 	//根据RedisBreakerManagerObject获取breakerStateManager对象
 	public BreakerStateManager toManager() {
-		BreakerStateManager breakerStateManager = new BreakerStateManager(this.failCount, this.successCount, this.closeAt, this.maxFailCount, this.maxSuccessCount, this.openRetryCount, this.maxOpenRetryCount);
+		BreakerStateManager breakerStateManager = new BreakerStateManager(0,0,0,maxOpenToTryTime,maxFailCount,maxSuccessCount, maxOpenRetryCount);
+
 		if(this.stateEnum == BreakerStateEnum.CLOSE){
 			breakerStateManager.toCloseStatus();
 		}

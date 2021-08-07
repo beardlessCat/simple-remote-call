@@ -1,7 +1,6 @@
 package com.bigyj.utils;
 
 import java.util.Arrays;
-
 import com.bigyj.breaker.manager.RedisBreakerManagerObject;
 import com.bigyj.breaker.manager.BreakerStateManager;
 import io.protostuff.LinkedBuffer;

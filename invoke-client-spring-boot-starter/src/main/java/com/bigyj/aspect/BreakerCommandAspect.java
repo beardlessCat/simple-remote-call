@@ -68,6 +68,7 @@ public class BreakerCommandAspect {
 			result = point.proceed(args);
 			//正常执行
 		}catch (Exception e){
+			logger.error("接口调用失败！");
 			//发生异常区分
 			breakerState.actException();
 		}

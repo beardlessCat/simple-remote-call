@@ -5,8 +5,10 @@ import com.bigyj.breaker.state.ClosedState;
 import com.bigyj.breaker.state.HalfOpenState;
 import com.bigyj.breaker.state.OpenState;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
+@Slf4j
 public class BreakerStateManager {
     /**
      * 失败次数
@@ -45,13 +47,14 @@ public class BreakerStateManager {
      */
     private BreakerState breakerState ;
 
-    public BreakerStateManager(int failCount, int successCount, long maxOpenToTryTime, int maxFailCount, int maxSuccessCount, int openRetryCount, int maxOpenRetryCount) {
+    public BreakerStateManager(int failCount, int successCount,int openRetryCount,  long maxOpenToTryTime, int maxFailCount, int maxSuccessCount, int maxOpenRetryCount) {
         this.failCount = failCount;
         this.successCount = successCount;
         this.maxOpenToTryTime = maxOpenToTryTime;
         this.maxFailCount = maxFailCount;
         this.maxSuccessCount = maxSuccessCount;
         this.openRetryCount = openRetryCount;
+        this.maxOpenRetryCount = maxOpenRetryCount;
         this.toCloseStatus();
     }
 
@@ -59,7 +62,7 @@ public class BreakerStateManager {
         this.breakerState = new OpenState(this);
         this.successCount = 0;
         this.openRetryCount = 0;
-        System.out.println("【断路器变为OPEN】");
+        logger.error("【断路器变为OPEN】");
     }
 
     /**
@@ -69,7 +72,7 @@ public class BreakerStateManager {
     public void toCloseStatus(){
         this.breakerState = new ClosedState(this);
         this.clear();
-        System.out.println("【断路器变为CLOSE】");
+        logger.error("【断路器变为CLOSE】");
     }
 
     /**
@@ -77,7 +80,7 @@ public class BreakerStateManager {
      */
     public void toHalfOpenStatus(){
         this.breakerState = new HalfOpenState(this);
-        System.out.println("【断路器变为HALF-OPEN】");
+        logger.error("【断路器变为HALF-OPEN】");
     }
 
     public void clear() {

@@ -35,6 +35,7 @@ public class HalfOpenState extends BreakerState{
 	public void actException() {
 		super.actException();
 		breakerStateManager.resetSuccessCount();
+		breakerStateManager.increaseRetryCount();
 		if(breakerStateManager.failRetryCountReached()){
 			breakerStateManager.toOpenStatus();
 		}
