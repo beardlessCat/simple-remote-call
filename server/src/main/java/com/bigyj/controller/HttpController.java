@@ -21,6 +21,6 @@ public class HttpController {
 		ResponseDto responseDto = new ResponseDto().setCode("0000").setData(queryUser).setMsg("查询成功");
 		String userJson = JSONObject.toJSONString(responseDto);
 		String encrypt = AESUtil.encrypt(AesConstant.AES_KEY, AesConstant.AES_IV, userJson);
-		return new ResponseCommon().setCode("0000").setEntryData(encrypt).setMsg("token获取成功！");
+		return new ResponseCommon().setCode("0000").setEntryData(encrypt).setMsg("用户查询成功！");
 	}
 }

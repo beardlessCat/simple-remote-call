@@ -18,5 +18,4 @@ public class TestController {
 	public void hello(){
 		ResponseDto<User> user = requesClient.queryUser(new User().setName("小明"));
 	}
-
 }

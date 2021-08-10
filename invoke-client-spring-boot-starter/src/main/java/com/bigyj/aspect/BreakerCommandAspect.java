@@ -60,7 +60,6 @@ public class BreakerCommandAspect {
 			//正常执行
 			breakerState.actSuccess();
 		}catch (Exception e){
-			logger.error("接口调用失败！");
 			//发生异常区分
 			breakerState.actException();
 		}

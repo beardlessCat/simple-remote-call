@@ -8,6 +8,7 @@ import com.bigyj.breaker.state.ClosedState;
 import com.bigyj.breaker.state.HalfOpenState;
 import com.bigyj.breaker.state.OpenState;
 import com.bigyj.exception.MethodNotAvailableException;
+import com.bigyj.utils.SpringUtils;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +18,7 @@ import org.springframework.context.ApplicationContextAware;
 
 @Data
 @Slf4j
-public class BreakerStateManager implements ApplicationContextAware {
+public class BreakerStateManager {
     /**
      * 失败次数
      */
@@ -54,9 +55,10 @@ public class BreakerStateManager implements ApplicationContextAware {
      * 当前状态
      */
     private BreakerState breakerState ;
-
+    /**
+     * Breaker相关参数
+     */
     private MetaBreaker metaBreaker ;
-    private ApplicationContext applicationContext ;
 
     public BreakerStateManager(int failCount, int successCount,int openRetryCount, MetaBreaker  metaBreaker) {
         this.failCount = failCount;
@@ -199,21 +201,23 @@ public class BreakerStateManager implements ApplicationContextAware {
         return this.failCount>=this.maxFailCount;
     }
 
+    /**
+     * 执行fallBack方法
+     * @return
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
     public Object fallbackCall() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         if(!this.metaBreaker.isIfFallback()){
             throw new MethodNotAvailableException("服务已熔断，请稍等重试！");
         }
         Class<?> fallback = metaBreaker.getFallback();
         String name = metaBreaker.getName();
-        Object bean = applicationContext.getBean(fallback);
+        Object bean = SpringUtils.getBean(fallback);
         Object[] args = metaBreaker.getArgs();
         Method method = fallback.getDeclaredMethod(name,args[0].getClass());
         Object result = method.invoke(bean, args);
         return result;
-    }
-
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext ;
     }
 }
