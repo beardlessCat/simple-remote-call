@@ -1,15 +1,23 @@
 package com.bigyj.breaker.manager;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
 import com.bigyj.breaker.state.BreakerState;
 import com.bigyj.breaker.state.ClosedState;
 import com.bigyj.breaker.state.HalfOpenState;
 import com.bigyj.breaker.state.OpenState;
+import com.bigyj.exception.MethodNotAvailableException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
 @Data
 @Slf4j
-public class BreakerStateManager {
+public class BreakerStateManager implements ApplicationContextAware {
     /**
      * 失败次数
      */
@@ -47,14 +55,18 @@ public class BreakerStateManager {
      */
     private BreakerState breakerState ;
 
-    public BreakerStateManager(int failCount, int successCount,int openRetryCount,  long maxOpenToTryTime, int maxFailCount, int maxSuccessCount, int maxOpenRetryCount) {
+    private MetaBreaker metaBreaker ;
+    private ApplicationContext applicationContext ;
+
+    public BreakerStateManager(int failCount, int successCount,int openRetryCount, MetaBreaker  metaBreaker) {
         this.failCount = failCount;
         this.successCount = successCount;
-        this.maxOpenToTryTime = maxOpenToTryTime;
-        this.maxFailCount = maxFailCount;
-        this.maxSuccessCount = maxSuccessCount;
+        this.maxOpenToTryTime = metaBreaker.getMaxOpenToTryTime();
+        this.maxFailCount = metaBreaker.getMaxFailCount();
+        this.maxSuccessCount = metaBreaker.getMaxSuccessCount();
         this.openRetryCount = openRetryCount;
-        this.maxOpenRetryCount = maxOpenRetryCount;
+        this.maxOpenRetryCount = metaBreaker.getMaxOpenRetryCount();
+        this.metaBreaker = metaBreaker;
         this.toCloseStatus();
     }
 
@@ -185,5 +197,23 @@ public class BreakerStateManager {
      */
     public boolean failCountReached() {
         return this.failCount>=this.maxFailCount;
+    }
+
+    public Object fallbackCall() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        if(!this.metaBreaker.isIfFallback()){
+            throw new MethodNotAvailableException("服务已熔断，请稍等重试！");
+        }
+        Class<?> fallback = metaBreaker.getFallback();
+        String name = metaBreaker.getName();
+        Object bean = applicationContext.getBean(fallback);
+        Object[] args = metaBreaker.getArgs();
+        Method method = fallback.getDeclaredMethod(name,args[0].getClass());
+        Object result = method.invoke(bean, args);
+        return result;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext ;
     }
 }

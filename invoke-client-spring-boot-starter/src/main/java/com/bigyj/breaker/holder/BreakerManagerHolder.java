@@ -1,6 +1,7 @@
 package com.bigyj.breaker.holder;
 
 import com.bigyj.breaker.manager.BreakerStateManager;
+import com.bigyj.breaker.manager.MetaBreaker;
 
 public interface BreakerManagerHolder {
 	/**
@@ -8,7 +9,7 @@ public interface BreakerManagerHolder {
 	 * @param targetName
 	 * @return
 	 */
-	BreakerStateManager get(String targetName);
+	BreakerStateManager get(String targetName, MetaBreaker metaBreaker);
 
 	/**
 	 * 管理（存储、更新）BreakerStateManager对象

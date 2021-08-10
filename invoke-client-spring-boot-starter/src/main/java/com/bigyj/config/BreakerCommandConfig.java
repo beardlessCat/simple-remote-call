@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class BreakerCommandConfig {
 	@Bean
-	public BreakerManagerHolder memoryBreakerManagerHolder(BreakerConfig breakerConfig){
-		return new MemoryBreakerManagerHolder(breakerConfig);
+	public BreakerManagerHolder memoryBreakerManagerHolder(){
+		return new MemoryBreakerManagerHolder();
 	}
 }

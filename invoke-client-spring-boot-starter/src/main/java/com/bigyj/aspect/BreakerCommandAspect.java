@@ -1,8 +1,11 @@
 package com.bigyj.aspect;
 
+import java.lang.reflect.Method;
+
 import com.bigyj.annotation.BreakerCommand;
 import com.bigyj.breaker.holder.BreakerManagerHolder;
 import com.bigyj.breaker.manager.BreakerStateManager;
+import com.bigyj.breaker.manager.MetaBreaker;
 import com.bigyj.breaker.state.BreakerState;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -10,30 +13,14 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Method;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
 @Slf4j
 public class BreakerCommandAspect {
-	private static final String MESSAGE = "method in not available!";
-
-	@Value("${breaker.maxOpenToTryTime}")
-	private int maxOpenToTryTime ;
-
-	@Value("${breaker.maxFailCount}")
-	private int maxFailCount;
-
-	@Value("${breaker.maxSuccessCount}")
-	private int maxSuccessCount;
-
-	@Value("${breaker.maxOpenRetryCount}")
-	private int maxOpenRetryCount;
-
 	@Autowired
 	private BreakerManagerHolder breakerManagerHolder ;
 
@@ -48,19 +35,22 @@ public class BreakerCommandAspect {
 		Object[] args = point.getArgs();
 		Object result = null;
 		BreakerCommand breakerCommand = method.getAnnotation(BreakerCommand.class);
-		if(maxOpenToTryTime<0){
-			maxOpenToTryTime = breakerCommand.maxOpenToTryTime();
-		}
-		if(maxFailCount<0){
-			maxFailCount = breakerCommand.maxFailCount();
-		}
-		if(maxSuccessCount<0){
-			maxSuccessCount = breakerCommand.maxSuccessCount();
-		}
-		if(maxOpenRetryCount<0){
-			maxOpenRetryCount = breakerCommand.maxOpenRetryCount();
-		}
-		BreakerStateManager breakerStateManager = breakerManagerHolder.get(methodName);
+		int maxOpenToTryTime = breakerCommand.maxOpenToTryTime();
+		int maxFailCount = breakerCommand.maxFailCount();
+		int maxSuccessCount = breakerCommand.maxSuccessCount();
+		int maxOpenRetryCount = breakerCommand.maxOpenRetryCount();
+		Class<?> fallback = breakerCommand.fallback();
+		MetaBreaker metaBreaker = MetaBreaker.builder()
+				.maxOpenRetryCount(maxOpenRetryCount)
+				.maxOpenToTryTime(maxOpenToTryTime)
+				.maxFailCount(maxFailCount)
+				.maxSuccessCount(maxSuccessCount)
+				.ifFallback(fallback==null ? false:true)
+				.fallback(fallback)
+				.args(args)
+				.name(method.getName())
+				.build();
+		BreakerStateManager breakerStateManager = breakerManagerHolder.get(methodName,metaBreaker);
 		logger.error(breakerStateManager.toString());
 		BreakerState breakerState = breakerStateManager.getBreakerState();
 		//判断当前接口是否能够调用（断路器是否开启）
@@ -76,4 +66,5 @@ public class BreakerCommandAspect {
 		}
 		return result ;
 	}
+
 }

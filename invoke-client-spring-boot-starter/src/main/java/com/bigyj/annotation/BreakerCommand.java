@@ -32,4 +32,11 @@ public @interface BreakerCommand {
 	 * @return
 	 */
 	int maxOpenRetryCount() default  BreakerManagerConfigConstant.MAX_OPEN_RETRY_COUNT;
+
+	/**
+	 * 接口熔断后，调用的方法
+	 * @return
+	 */
+	Class<?> fallback() default void.class;
+
 }

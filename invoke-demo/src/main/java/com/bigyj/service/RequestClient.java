@@ -6,6 +6,7 @@ import com.bigyj.annotation.InvokeRequest;
 import com.bigyj.common.dto.ResponseDto;
 import com.bigyj.common.entity.User;
 import com.bigyj.config.RemoteCallConfig;
+import com.bigyj.service.fallback.RequestClientFallback;
 
 import org.springframework.http.HttpMethod;
 
@@ -14,6 +15,6 @@ import org.springframework.http.HttpMethod;
 		configuration = {RemoteCallConfig.class})
 public interface RequestClient {
 	@InvokeRequest(value = "/queryUser",method = HttpMethod.POST)
-	@BreakerCommand
+	@BreakerCommand(fallback = RequestClientFallback.class)
 	public ResponseDto<User> queryUser(User user);
 }

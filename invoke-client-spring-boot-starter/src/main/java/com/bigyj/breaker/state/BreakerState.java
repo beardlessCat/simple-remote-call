@@ -1,10 +1,9 @@
 package com.bigyj.breaker.state;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
 
 import com.bigyj.breaker.manager.BreakerStateManager;
-import com.bigyj.common.exception.ApiException;
-import com.bigyj.exception.MethodNotAvailableException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -17,10 +16,10 @@ public abstract class BreakerState implements Serializable {
 	/**
 	 * 调用方法之前处理的操作
 	 */
-	public void methodIsAboutToBeCalled() {
+	public void methodIsAboutToBeCalled() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		//如果是断开状态，直接返回，然后等超时转换到半断开状态
 		if (breakerStateManager.isOpen()) {
-			throw new MethodNotAvailableException("服务已熔断，请稍等重试！");
+			breakerStateManager.fallbackCall();
 		}
 	}
 
