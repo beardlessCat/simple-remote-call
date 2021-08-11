@@ -1,7 +1,7 @@
 package com.bigyj.config;
 
-import com.bigyj.breaker.holder.BreakerManagerHolder;
-import com.bigyj.breaker.holder.MemoryBreakerManagerHolder;
+import com.bgiyj.holder.BreakerManagerHolder;
+import com.bgiyj.holder.MemoryBreakerManagerHolder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

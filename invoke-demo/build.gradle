@@ -3,6 +3,8 @@ apply plugin: pluginIds.springBoot
 
 dependencies {
     implementation project(':invoke-client-spring-boot-starter')
+	implementation project(':invoke-breaker-spring-boot-starter')
+
 	implementation project(':common')
 	implementation libraries.springBootStarterWeb
 	implementation libraries.springBootStarterDataRedis

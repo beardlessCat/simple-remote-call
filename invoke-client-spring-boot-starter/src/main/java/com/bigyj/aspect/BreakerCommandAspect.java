@@ -3,10 +3,10 @@ package com.bigyj.aspect;
 import java.lang.reflect.Method;
 
 import com.bigyj.annotation.BreakerCommand;
-import com.bigyj.breaker.holder.BreakerManagerHolder;
-import com.bigyj.breaker.manager.BreakerStateManager;
-import com.bigyj.breaker.manager.MetaBreaker;
-import com.bigyj.breaker.state.BreakerState;
+import com.bgiyj.holder.BreakerManagerHolder;
+import com.bgiyj.manager.BreakerStateManager;
+import com.bgiyj.manager.MetaBreaker;
+import com.bgiyj.state.BreakerState;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -24,7 +24,7 @@ public class BreakerCommandAspect {
 	@Autowired
 	private BreakerManagerHolder breakerManagerHolder ;
 
-	@Pointcut("@annotation(com.bigyj.annotation.BreakerCommand)")
+	@Pointcut("@annotation(com.bgiyj.annotation.BreakerCommand)")
 	public void retryPointCut() {
 	}
 

@@ -3,4 +3,5 @@ include 'invoke-client-spring-boot-starter'
 include 'invoke-demo'
 include 'server'
 include 'common'
+include 'invoke-breaker-spring-boot-starter'
 

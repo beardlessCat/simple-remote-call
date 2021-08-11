@@ -3,18 +3,14 @@ package com.bigyj.breaker.manager;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import com.bigyj.breaker.exception.MethodNotAvailableException;
 import com.bigyj.breaker.state.BreakerState;
 import com.bigyj.breaker.state.ClosedState;
-import com.bigyj.breaker.state.HalfOpenState;
 import com.bigyj.breaker.state.OpenState;
-import com.bigyj.exception.MethodNotAvailableException;
-import com.bigyj.utils.SpringUtils;
+import com.bigyj.breaker.utils.SpringUtils;
+import com.bigyj.breaker.state.HalfOpenState;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-
-import org.springframework.beans.BeansException;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 
 @Data
 @Slf4j

@@ -1,6 +1,6 @@
 package com.bigyj.service;
 
-import com.bigyj.annotation.BreakerCommand;
+import com.bigyj.breaker.annotation.BreakerCommand;
 import com.bigyj.annotation.InvokeClient;
 import com.bigyj.annotation.InvokeRequest;
 import com.bigyj.common.dto.ResponseDto;
