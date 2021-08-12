@@ -12,20 +12,17 @@
 只需要按照接口出入参拼接实体类，再接口中维护接口信息即可。一些公共的接口调用逻辑，在动态代理的InvocationHandler中统一进行处理（序列化、反序列化、远程接口调用、异常处理等等）。
 同时该部分代码单独打包成jar包，易于维护及管理。
 ```java
-@InvokeClient(value = "/v1/api")
-public interface RequesClient {
-	@InvokeRequest(value = "/hello",withAccessToken = false,method = HttpMethod.GET)
-	public ResponseDto hello( HelloDto helloDto);
-	@InvokeRequest(value = "/delete",method = HttpMethod.DELETE)
-	public ResponseDto delete(DeleteDto deleteDto);
-	@InvokeRequest(value = "/add",withAccessToken = false,method = HttpMethod.POST)
-	public ResponseDto add(AddDto addDto);
+@InvokeClient(value = "/v1/api",
+		name = "requestClient",
+		configuration = {RemoteCallConfig.class})
+public interface RequestClient {
+	@InvokeRequest(value = "/queryUser",method = HttpMethod.POST)
+	@BreakerCommand(fallback = RequestClientFallback.class)
+	public ResponseDto<User> queryUser(User user);
 }
 ```
 ### 3. 能够实现什么功能
 - 基础远程调用【已完成】
-- 远程调用自定义扩展
-- accessToken获取自定义扩展
 - 重试机制【已完成】
 - 熔断机制【已完成】
 - 自定义配置类及客户段配置类之间的隔离【已完成】
