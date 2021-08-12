@@ -98,31 +98,6 @@ public class BreakerStateManager {
         this.successCount = 0;
         this.openRetryCount = 0;
     }
-
-    /**
-     * 是否关闭
-     * @return
-     */
-    public boolean isClosed() {
-        return breakerState instanceof ClosedState;
-    }
-
-    /**
-     * 是否开启
-     * @return
-     */
-    public boolean isOpen() {
-        return breakerState instanceof OpenState;
-    }
-
-    /**
-     * 是否半开启
-     * @return
-     */
-    public boolean isHalfOpen() {
-        return breakerState instanceof HalfOpenState;
-    }
-
     /**
      * 增加重试次数
      */
