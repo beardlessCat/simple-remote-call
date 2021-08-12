@@ -12,15 +12,10 @@ public abstract class BreakerState implements Serializable {
 	public BreakerState(BreakerStateManager breakerStateManager) {
 		this.breakerStateManager = breakerStateManager;
 	}
-
 	/**
 	 * 调用方法之前处理的操作
 	 */
 	public void methodIsAboutToBeCalled() throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
-		//如果是断开状态，直接返回，然后等超时转换到半断开状态
-		if (breakerStateManager.isOpen()) {
-			breakerStateManager.fallbackCall();
-		}
 	}
 
 	/**
