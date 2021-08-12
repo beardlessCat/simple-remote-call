@@ -1,4 +1,4 @@
-package com.bigyj.breaker.manager;
+package com.breaker.manager;
 
 import lombok.Getter;
 
@@ -26,6 +26,7 @@ public class MetaBreaker {
 	public static Builder builder() {
 		return new Builder();
 	}
+
 	public static final class Builder {
 		private int maxOpenToTryTime ;
 		private int maxFailCount;

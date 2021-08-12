@@ -1,4 +1,4 @@
-package com.bigyj.breaker.constant;
+package com.breaker.constant;
 
 public class BreakerManagerConfigConstant
 {

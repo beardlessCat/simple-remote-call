@@ -1,12 +1,12 @@
-package com.bigyj.aspect;
+package com.breaker.aspect;
 
 import java.lang.reflect.Method;
 
-import com.bigyj.annotation.BreakerCommand;
-import com.bgiyj.holder.BreakerManagerHolder;
-import com.bgiyj.manager.BreakerStateManager;
-import com.bgiyj.manager.MetaBreaker;
-import com.bgiyj.state.BreakerState;
+import com.breaker.annotation.BreakerCommand;
+import com.breaker.holder.BreakerManagerHolder;
+import com.breaker.manager.BreakerStateManager;
+import com.breaker.manager.MetaBreaker;
+import com.breaker.state.BreakerState;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -15,16 +15,14 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
 @Aspect
 @Slf4j
 public class BreakerCommandAspect {
 	@Autowired
 	private BreakerManagerHolder breakerManagerHolder ;
 
-	@Pointcut("@annotation(com.bgiyj.annotation.BreakerCommand)")
+	@Pointcut("@annotation(com.breaker.annotation.BreakerCommand)")
 	public void retryPointCut() {
 	}
 

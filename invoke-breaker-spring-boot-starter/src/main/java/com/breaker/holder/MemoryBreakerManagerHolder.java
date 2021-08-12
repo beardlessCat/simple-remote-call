@@ -1,9 +1,9 @@
-package com.bigyj.breaker.holder;
+package com.breaker.holder;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.bigyj.breaker.manager.BreakerStateManager;
-import com.bigyj.breaker.manager.MetaBreaker;
+import com.breaker.manager.BreakerStateManager;
+import com.breaker.manager.MetaBreaker;
 
 public class MemoryBreakerManagerHolder implements BreakerManagerHolder{
 

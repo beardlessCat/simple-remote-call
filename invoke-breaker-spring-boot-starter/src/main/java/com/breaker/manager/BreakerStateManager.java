@@ -1,14 +1,14 @@
-package com.bigyj.breaker.manager;
+package com.breaker.manager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import com.bigyj.breaker.exception.MethodNotAvailableException;
-import com.bigyj.breaker.state.BreakerState;
-import com.bigyj.breaker.state.ClosedState;
-import com.bigyj.breaker.state.OpenState;
-import com.bigyj.breaker.utils.SpringUtils;
-import com.bigyj.breaker.state.HalfOpenState;
+import com.breaker.exception.MethodNotAvailableException;
+import com.breaker.state.BreakerState;
+import com.breaker.state.ClosedState;
+import com.breaker.state.OpenState;
+import com.breaker.utils.SpringUtils;
+import com.breaker.state.HalfOpenState;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,9 +1,9 @@
-package com.bigyj.breaker.state;
+package com.breaker.state;
 
 import java.lang.reflect.InvocationTargetException;
 import java.security.SecureRandom;
 
-import com.bigyj.breaker.manager.BreakerStateManager;
+import com.breaker.manager.BreakerStateManager;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

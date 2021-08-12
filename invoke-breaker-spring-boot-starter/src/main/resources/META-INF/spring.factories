@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.bigyj.config.BreakerCommandConfig
+com.breaker.config.BreakerCommandConfig

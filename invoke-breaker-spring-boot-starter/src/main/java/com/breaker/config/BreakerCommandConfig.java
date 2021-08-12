@@ -1,7 +1,9 @@
-package com.bigyj.config;
+package com.breaker.config;
 
-import com.bgiyj.holder.BreakerManagerHolder;
-import com.bgiyj.holder.MemoryBreakerManagerHolder;
+
+import com.breaker.aspect.BreakerCommandAspect;
+import com.breaker.holder.BreakerManagerHolder;
+import com.breaker.holder.MemoryBreakerManagerHolder;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,5 +13,10 @@ public class BreakerCommandConfig {
 	@Bean
 	public BreakerManagerHolder memoryBreakerManagerHolder(){
 		return new MemoryBreakerManagerHolder();
+	}
+
+	@Bean
+	public BreakerCommandAspect breakerCommandAspect(){
+		return new BreakerCommandAspect();
 	}
 }

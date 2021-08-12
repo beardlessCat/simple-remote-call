@@ -1,4 +1,4 @@
-package com.bigyj.breaker.utils;
+package com.breaker.utils;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

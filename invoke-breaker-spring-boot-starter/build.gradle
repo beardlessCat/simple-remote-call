@@ -1,5 +1,7 @@
 
 dependencies {
     compileOnly libraries.springBootStarterWeb
+    annotationProcessor libraries.springBootConfigurationProcessor
+    implementation libraries.springBootStarterAop
 
 }

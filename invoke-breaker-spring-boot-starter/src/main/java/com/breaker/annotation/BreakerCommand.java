@@ -1,4 +1,4 @@
-package com.bigyj.breaker.annotation;
+package com.breaker.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.bigyj.breaker.constant.BreakerManagerConfigConstant;
+import com.breaker.constant.BreakerManagerConfigConstant;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

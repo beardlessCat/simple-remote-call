@@ -1,10 +1,10 @@
-package com.bigyj.breaker.state;
+package com.breaker.state;
 
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.bigyj.breaker.manager.BreakerStateManager;
+import com.breaker.manager.BreakerStateManager;
 
 public class OpenState extends BreakerState {
 	public OpenState(BreakerStateManager breakerStateManager) {
