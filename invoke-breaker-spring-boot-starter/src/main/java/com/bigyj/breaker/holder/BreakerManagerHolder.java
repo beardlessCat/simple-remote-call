@@ -1,6 +1,9 @@
 package com.bigyj.breaker.holder;
 
 
+import com.bigyj.breaker.manager.BreakerStateManager;
+import com.bigyj.breaker.manager.MetaBreaker;
+
 public interface BreakerManagerHolder {
 	/**
 	 * 获取BreakerStateManager对象
