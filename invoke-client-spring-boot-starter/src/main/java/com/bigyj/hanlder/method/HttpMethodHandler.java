@@ -47,7 +47,7 @@ public class HttpMethodHandler implements MethodHandler{
 		}
 		AccessToken accessToken = new AccessToken() ;
 		if(methodMetadata.isWithAccessToken()){
-			accessToken = accessTokenSupplier.get();
+			accessToken = accessTokenSupplier.getAccessToken();
 		}
 		int tryCount = 0;
 		//超时重试机制

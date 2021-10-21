@@ -19,7 +19,7 @@ import org.springframework.util.StringUtils;
 
 @AllArgsConstructor
 @Slf4j
-public class RedisAccessTokenSupplier implements AccessTokenSupplier{
+public class RedisAccessTokenSupplier extends AbstractAccessTokenSupplier{
 	private static final String TOKEN_LOCK_KEY= "ACCESS_TOKEN_LOCK";
 	private static final String TOKEN_KEY= "ACCESS_TOKEN";
 	private RestTokenClient restTokenClient ;
@@ -28,7 +28,7 @@ public class RedisAccessTokenSupplier implements AccessTokenSupplier{
 	private RedissonClient redissonClient ;
 
 	@Override
-	public AccessToken get() throws InterruptedException {
+	public AccessToken getAccessToken() throws InterruptedException {
 		AccessToken accessToken = new AccessToken();
 		//从redis数据库中获取数据
 		String token = this.getRedisToken();
@@ -56,6 +56,11 @@ public class RedisAccessTokenSupplier implements AccessTokenSupplier{
 			}
 		}
 		return accessToken;
+	}
+
+	@Override
+	public AccessToken refreshAccessToken() throws InterruptedException {
+		return null;
 	}
 
 	/**
