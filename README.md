@@ -225,4 +225,5 @@ public class InvokeClientFactoryBean implements FactoryBean<Object>, Application
 		this.applicationContext = applicationContext;
 	}
 }
+
 ```
